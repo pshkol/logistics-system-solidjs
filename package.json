@@ -3,9 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
-    "build": "vinxi build --preset cloudflare-pages",
-    "start": "vinxi start",
-    "deploy": "pnpx wrangler pages publish dist"
+    "build": "vinxi build",
+    "start": "vinxi start"
   },
   "dependencies": {
     "@solidjs/router": "^0.13.3",
