@@ -1,0 +1,1 @@
+ALTER TABLE "movement" ADD COLUMN "amount" numeric NOT NULL;
