@@ -94,7 +94,7 @@ export default function CreateMovementTypeDialog({
               )}
             </Field>
             <Field name={"type"}>
-              {(store, props) => (
+              {(store) => (
                 <Select
                   value={store.value}
                   onChange={(

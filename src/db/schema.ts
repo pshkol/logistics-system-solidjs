@@ -24,7 +24,7 @@ export const movementTypeSchema = pgTable("movement_type", {
 
 export const movementTypeSchemaRelations = relations(
   movementTypeSchema,
-  ({ many, one }) => ({
+  ({ many }) => ({
     movements: many(movementSchema),
   }),
 );
@@ -40,12 +40,9 @@ export const movementSchema = pgTable("movement", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
 
-export const movementSchemaRelations = relations(
-  movementSchema,
-  ({ many, one }) => ({
-    movementType: one(movementTypeSchema, {
-      references: [movementTypeSchema.id],
-      fields: [movementSchema.movementTypeId],
-    }),
+export const movementSchemaRelations = relations(movementSchema, ({ one }) => ({
+  movementType: one(movementTypeSchema, {
+    references: [movementTypeSchema.id],
+    fields: [movementSchema.movementTypeId],
   }),
-);
+}));
