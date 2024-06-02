@@ -37,7 +37,7 @@ export default function CreateDriverDialog(props: CreateDriverDialogProps) {
         success: "Conductor creado",
         error: "Error al crear conductor",
       })
-      .then(async () => {
+      .then(() => {
         props.refreshDrivers();
         setOpen(false);
       });

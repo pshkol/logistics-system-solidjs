@@ -33,7 +33,11 @@ export default function TopNav() {
       <Menubar.Menu>
         <Menubar.Trigger
           as={Button}
-          variant={isActive("/config/movement-type") ? "default" : "link"}
+          variant={
+            isActive("/config/movement-type") || isActive("/config/driver")
+              ? "default"
+              : "link"
+          }
         >
           Configuración
         </Menubar.Trigger>
