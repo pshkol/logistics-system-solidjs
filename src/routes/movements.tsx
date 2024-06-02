@@ -10,13 +10,13 @@ export default function Movements() {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [movements] = createResource(pagination, getMovements);
+  const [movements, { refetch }] = createResource(pagination, getMovements);
 
   return (
     <main class={"container p-5"}>
-      <aside class={"flex justify-between items-center"}>
+      <aside class={"flex items-center justify-between"}>
         <h1 class={"text-lg font-semibold"}>Ingresos / Gastos</h1>
-        <AddMovementDialog />
+        <AddMovementDialog refreshMovements={refetch} />
       </aside>
       <section class={"mt-5"}>
         <Show when={movements.state === "ready"} fallback={"Cargando..."}>

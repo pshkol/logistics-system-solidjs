@@ -38,6 +38,7 @@ export const movementSchema = pgTable("movement", {
   movementTypeId: integer("movement_type_id").references(
     () => movementTypeSchema.id,
   ),
+  driverId: integer("driver_id").references(() => driverSchema.id),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
@@ -46,6 +47,10 @@ export const movementSchemaRelations = relations(movementSchema, ({ one }) => ({
   movementType: one(movementTypeSchema, {
     references: [movementTypeSchema.id],
     fields: [movementSchema.movementTypeId],
+  }),
+  driver: one(driverSchema, {
+    references: [driverSchema.id],
+    fields: [movementSchema.driverId],
   }),
 }));
 
@@ -56,3 +61,7 @@ export const driverSchema = pgTable("driver", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
+
+export const driverSchemaRelations = relations(driverSchema, ({ many }) => ({
+  movements: many(movementSchema),
+}));
