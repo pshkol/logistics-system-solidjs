@@ -33,12 +33,20 @@ import { movementDirectionTypeEnum, movementTypeSchema } from "~/db/schema";
 import { createSignal } from "solid-js";
 import { toast } from "solid-toast";
 import { errorMessageClass } from "~/utils/error-message-class";
+import {
+  Switch,
+  SwitchControl,
+  SwitchLabel,
+  SwitchThumb,
+} from "~/components/ui/switch";
 
 const createMovementType = async (values: MovementTypeSchema) => {
   "use server";
+
   await db.insert(movementTypeSchema).values({
     name: values.name,
     type: values.type,
+    isDriverRequired: values.isDriverRequired,
   });
 };
 
@@ -54,6 +62,9 @@ export default function CreateMovementTypeDialog({
 
   const [form, { Form, Field }] = createForm<MovementTypeSchema>({
     validate: valiForm(MovementTypeSchema),
+    initialValues: {
+      isDriverRequired: false,
+    },
   });
 
   const handleSubmit: SubmitHandler<MovementTypeSchema> = async (values) => {
@@ -122,6 +133,23 @@ export default function CreateMovementTypeDialog({
                   <SelectContent />
                   <p class={errorMessageClass}>{store.error}</p>
                 </Select>
+              )}
+            </Field>
+            <Field name={"isDriverRequired"} type={"boolean"}>
+              {() => (
+                <Switch
+                  onChange={(isChecked) =>
+                    setValue(form, "isDriverRequired", isChecked)
+                  }
+                  class="flex items-center space-x-2"
+                >
+                  <SwitchControl>
+                    <SwitchThumb />
+                  </SwitchControl>
+                  <SwitchLabel class="text-sm font-medium leading-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70">
+                    El conductor es requerido?
+                  </SwitchLabel>
+                </Switch>
               )}
             </Field>
             <Button disabled={isPending()} type={"submit"}>

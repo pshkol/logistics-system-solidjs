@@ -1,0 +1,1 @@
+ALTER TABLE "movement_type" ADD COLUMN "is_driver_required" boolean NOT NULL;

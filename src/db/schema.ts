@@ -6,6 +6,7 @@ import {
   pgEnum,
   integer,
   numeric,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -18,6 +19,7 @@ export const movementTypeSchema = pgTable("movement_type", {
   id: serial("id").primaryKey().notNull(),
   name: text("first_name").notNull(),
   type: movementDirectionTypeEnum("movement_direction_type"),
+  isDriverRequired: boolean("is_driver_required").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });

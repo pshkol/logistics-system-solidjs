@@ -57,6 +57,13 @@
       "when": 1717338254104,
       "tag": "0007_massive_rictor",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1717342363332,
+      "tag": "0008_cuddly_whirlwind",
+      "breakpoints": true
     }
   ]
 }
