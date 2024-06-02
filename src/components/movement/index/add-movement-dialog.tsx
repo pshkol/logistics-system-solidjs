@@ -37,17 +37,42 @@ import {
   TextFieldRoot,
 } from "~/components/ui/textfield";
 import { db } from "~/db/db";
-import { movementSchema } from "~/db/schema";
+import { clientDebtSchema, movementSchema } from "~/db/schema";
 import { toast } from "solid-toast";
 import { getDrivers } from "~/actions/driver/get-drivers";
+import { getClients } from "~/actions/client/get-clients";
 
 const createMovement = async (values: MovementSchema) => {
   "use server";
-  await db.insert(movementSchema).values({
-    amount: values.amount.toString(),
-    description: values.description,
-    movementTypeId: values.movementTypeId,
-    driverId: values.driverId,
+  const movementType = await db.query.movementTypeSchema.findFirst({
+    where: (movementType, { eq }) => eq(movementType.id, values.movementTypeId),
+  });
+
+  if (!movementType) {
+    throw new Error("Tipo de movimiento no encontrado");
+  }
+
+  await db.transaction(async (tx) => {
+    let clientDebtId;
+
+    if (movementType.doCreateClientDebt) {
+      await tx
+        .insert(clientDebtSchema)
+        .values({
+          amount: values.amount.toString(),
+          clientId: values.clientId!,
+        })
+        .returning()
+        .then((res) => (clientDebtId = res[0].id));
+    }
+
+    await tx.insert(movementSchema).values({
+      amount: values.amount.toString(),
+      description: values.description,
+      movementTypeId: values.movementTypeId,
+      driverId: values.driverId,
+      customerDebtId: clientDebtId,
+    });
   });
 };
 
@@ -64,6 +89,7 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
 
   const [movementTypes] = createResource(pagination, getMovementTypes);
   const [drivers] = createResource(pagination, getDrivers);
+  const [clients] = createResource(pagination, getClients);
 
   const [form, { Form, Field }] = createForm<MovementSchema>({
     validate: valiForm(MovementSchema),
@@ -97,6 +123,9 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
           <Field name={"isDriverRequired"} type={"boolean"}>
             {() => null}
           </Field>
+          <Field name={"isClientRequired"} type={"boolean"}>
+            {() => null}
+          </Field>
           <Field name={"movementTypeId"} type={"number"}>
             {(store) => (
               <Combobox
@@ -110,6 +139,9 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
                   setValues(form, {
                     isDriverRequired: movementType?.isDriverRequired ?? false,
                     movementTypeId: movementType?.id ?? 0,
+                    driverId: undefined,
+                    isClientRequired: movementType?.isClientRequired ?? false,
+                    clientId: undefined,
                   });
                 }}
                 itemComponent={(props) => (
@@ -161,7 +193,47 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
                     </ComboboxItem>
                   )}
                 >
-                  <ComboboxControl aria-label="Movement type">
+                  <ComboboxControl aria-label="Driver">
+                    <ComboboxInput />
+                    <ComboboxTrigger />
+                  </ComboboxControl>
+                  <ComboboxContent />
+                  {store.error && (
+                    <p class={errorMessageClass}>{store.error}</p>
+                  )}
+                </Combobox>
+              )}
+            </Field>
+          </Show>
+          <Show
+            when={
+              getValue(form, "isClientRequired") &&
+              getValue(form, "movementTypeId") !== 0
+            }
+          >
+            <Field name={"clientId"} type={"number"}>
+              {(store) => (
+                <Combobox
+                  options={clients()?.data.map((item) => item.name) ?? []}
+                  placeholder="Cliente"
+                  onChange={(value) => {
+                    setValue(
+                      form,
+                      "clientId",
+                      clients()?.data.find((item) => item.name === value)?.id ??
+                        0,
+                    );
+                  }}
+                  itemComponent={(props) => (
+                    <ComboboxItem item={props.item}>
+                      <ComboboxItemLabel>
+                        {props.item.rawValue}
+                      </ComboboxItemLabel>
+                      <ComboboxItemIndicator />
+                    </ComboboxItem>
+                  )}
+                >
+                  <ComboboxControl aria-label="Client">
                     <ComboboxInput />
                     <ComboboxTrigger />
                   </ComboboxControl>

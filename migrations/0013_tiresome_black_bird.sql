@@ -1,0 +1,1 @@
+ALTER TABLE "movement_type" RENAME COLUMN "first_name" TO "name";

@@ -17,9 +17,11 @@ export const movementDirectionTypeEnum = pgEnum("movement_direction_type", [
 
 export const movementTypeSchema = pgTable("movement_type", {
   id: serial("id").primaryKey().notNull(),
-  name: text("first_name").notNull(),
+  name: text("name").notNull(),
   type: movementDirectionTypeEnum("movement_direction_type"),
   isDriverRequired: boolean("is_driver_required").notNull(),
+  doCreateClientDebt: boolean("do_create_client_debt").notNull(),
+  isClientRequired: boolean("is_client_required").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
@@ -38,6 +40,9 @@ export const movementSchema = pgTable("movement", {
   movementTypeId: integer("movement_type_id").references(
     () => movementTypeSchema.id,
   ),
+  customerDebtId: integer("customer_debt_id").references(
+    () => clientDebtSchema.id,
+  ),
   driverId: integer("driver_id").references(() => driverSchema.id),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
@@ -51,6 +56,10 @@ export const movementSchemaRelations = relations(movementSchema, ({ one }) => ({
   driver: one(driverSchema, {
     references: [driverSchema.id],
     fields: [movementSchema.driverId],
+  }),
+  clientDebt: one(clientDebtSchema, {
+    references: [clientDebtSchema.id],
+    fields: [movementSchema.customerDebtId],
   }),
 }));
 
@@ -72,3 +81,31 @@ export const clientSchema = pgTable("client", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
+
+export const clientSchemaRelations = relations(clientSchema, ({ many }) => ({
+  debts: many(clientDebtSchema),
+}));
+
+export const clientDebtSchema = pgTable("client_debt", {
+  id: serial("id").primaryKey().notNull(),
+  clientId: integer("client_id")
+    .references(() => clientSchema.id)
+    .notNull(),
+  amount: numeric("amount", { scale: 2 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});
+
+export const clientDebtSchemaRelations = relations(
+  clientDebtSchema,
+  ({ one }) => ({
+    client: one(clientSchema, {
+      references: [clientSchema.id],
+      fields: [clientDebtSchema.clientId],
+    }),
+    movement: one(movementSchema, {
+      references: [movementSchema.customerDebtId],
+      fields: [clientDebtSchema.id],
+    }),
+  }),
+);

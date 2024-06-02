@@ -22,7 +22,7 @@ export default function TopNav() {
       <Menubar.Menu>
         <Menubar.Trigger>
           <Button
-            variant={isActive("/movements") ? "default" : "link"}
+            variant={isActive("/movement") ? "default" : "link"}
             as={A}
             href="/movements"
           >

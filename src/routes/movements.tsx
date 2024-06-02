@@ -1,8 +1,8 @@
-import AddMovementDialog from "~/components/movements/index/add-movement-dialog";
+import AddMovementDialog from "~/components/movement/index/add-movement-dialog";
 import { createResource, createSignal, Show } from "solid-js";
 import { getMovements } from "~/actions/movement/get-movements";
 import { DataTable } from "~/components/ui/data-table";
-import { movementsTableColumns } from "~/components/movements/index/movements-table-columns";
+import { movementsTableColumns } from "~/components/movement/index/movements-table-columns";
 import { PaginationState } from "@tanstack/solid-table";
 
 export default function Movements() {

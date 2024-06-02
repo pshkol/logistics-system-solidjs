@@ -19,6 +19,8 @@ import {
   SubmitHandler,
   valiForm,
   setValue,
+  getValues,
+  getValue,
 } from "@modular-forms/solid";
 import { MovementTypeSchema } from "~/validations/config/movement-type-schema";
 import {
@@ -30,7 +32,7 @@ import {
 } from "~/components/ui/select";
 import { db } from "~/db/db";
 import { movementDirectionTypeEnum, movementTypeSchema } from "~/db/schema";
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { toast } from "solid-toast";
 import { errorMessageClass } from "~/utils/error-message-class";
 import {
@@ -47,6 +49,8 @@ const createMovementType = async (values: MovementTypeSchema) => {
     name: values.name,
     type: values.type,
     isDriverRequired: values.isDriverRequired,
+    doCreateClientDebt: values.doCreateClientDebt,
+    isClientRequired: values.isClientRequired,
   });
 };
 
@@ -65,6 +69,13 @@ export default function CreateMovementTypeDialog({
     initialValues: {
       isDriverRequired: false,
     },
+  });
+
+  createEffect(() => {
+    const formValues = getValues(form);
+    if (formValues.doCreateClientDebt) {
+      setValue(form, "isClientRequired", true);
+    }
   });
 
   const handleSubmit: SubmitHandler<MovementTypeSchema> = async (values) => {
@@ -93,7 +104,7 @@ export default function CreateMovementTypeDialog({
             Formulario para crear un tipo de ingreso / gasto
           </DialogDescription>
           <Form onSubmit={handleSubmit} class={"flex flex-col gap-4 py-4"}>
-            <Field name={"name"}>
+            <Field name={"name"} type={"string"}>
               {(store, props) => (
                 <TextFieldRoot
                   validationState={store.error ? "invalid" : "valid"}
@@ -104,7 +115,7 @@ export default function CreateMovementTypeDialog({
                 </TextFieldRoot>
               )}
             </Field>
-            <Field name={"type"}>
+            <Field name={"type"} type={"string"}>
               {(store) => (
                 <Select
                   value={store.value}
@@ -148,6 +159,43 @@ export default function CreateMovementTypeDialog({
                   </SwitchControl>
                   <SwitchLabel class="text-sm font-medium leading-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70">
                     El conductor es requerido?
+                  </SwitchLabel>
+                </Switch>
+              )}
+            </Field>
+            <Field name={"doCreateClientDebt"} type={"boolean"}>
+              {(store) => (
+                <Switch
+                  checked={store.value}
+                  onChange={(isChecked) =>
+                    setValue(form, "doCreateClientDebt", isChecked)
+                  }
+                  class="flex items-center space-x-2"
+                >
+                  <SwitchControl>
+                    <SwitchThumb />
+                  </SwitchControl>
+                  <SwitchLabel class="text-sm font-medium leading-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70">
+                    Crear deuda al cliente?
+                  </SwitchLabel>
+                </Switch>
+              )}
+            </Field>
+            <Field name={"isClientRequired"} type={"boolean"}>
+              {(store) => (
+                <Switch
+                  disabled={getValue(form, "doCreateClientDebt")}
+                  checked={store.value}
+                  onChange={(isChecked) =>
+                    setValue(form, "isClientRequired", isChecked)
+                  }
+                  class="flex items-center space-x-2"
+                >
+                  <SwitchControl>
+                    <SwitchThumb />
+                  </SwitchControl>
+                  <SwitchLabel class="text-sm font-medium leading-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70">
+                    El cliente es requerido?
                   </SwitchLabel>
                 </Switch>
               )}
