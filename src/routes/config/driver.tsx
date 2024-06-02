@@ -13,8 +13,8 @@ export default function Driver() {
   const [drivers, { refetch }] = createResource(pagination, getDrivers);
 
   return (
-    <main class={"container pt-5 flex-col flex gap-2"}>
-      <aside class={"flex justify-between items-center"}>
+    <main class={"container flex flex-col gap-2 pt-5"}>
+      <aside class={"flex items-center justify-between"}>
         <h1 class={"text-lg font-semibold"}>Conductores</h1>
         <CreateDriverDialog refreshDrivers={refetch} />
       </aside>

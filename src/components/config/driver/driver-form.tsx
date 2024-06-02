@@ -18,7 +18,7 @@ export default function DriverForm(props: DriverFormProps) {
   });
 
   return (
-    <Form onSubmit={props.onValidSubmit} class={"flex gap-2 flex-col"}>
+    <Form onSubmit={props.onValidSubmit} class={"flex flex-col gap-2"}>
       <Field name={"name"}>
         {(store, props) => (
           <TextFieldRoot validationState={store.error ? "invalid" : "valid"}>

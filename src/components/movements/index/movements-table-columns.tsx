@@ -14,7 +14,7 @@ export const movementsTableColumns: ColumnDef<
     header: "Monto",
     cell: ({ row }) => {
       return (
-        <div class={"flex gap-1 items-center"}>
+        <div class={"flex items-center gap-1"}>
           {row.original.movementType?.type === "IN" ? (
             <FaSolidArrowUp class={"text-green-500"} />
           ) : (

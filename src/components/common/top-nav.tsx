@@ -10,7 +10,7 @@ export default function TopNav() {
   return (
     <Menubar.Root
       as={"nav"}
-      class={"border-b-[1px] p-2 flex gap-3 border-b-neutral-300"}
+      class={"flex gap-3 border-b-[1px] border-b-neutral-300 p-2"}
     >
       <Menubar.Menu>
         <Menubar.Trigger>
@@ -43,11 +43,11 @@ export default function TopNav() {
         </Menubar.Trigger>
         <Menubar.Portal>
           <Menubar.Content
-            class={"p-1 w-[15rem] bg-white rounded-lg shadow-md"}
+            class={"w-[15rem] rounded-lg bg-white p-1 shadow-md"}
           >
             <Menubar.Item class={"p-2"}>
               <Button
-                class={"w-full inline-block"}
+                class={"inline-block w-full"}
                 as={A}
                 href="/config/movement-type"
                 variant={"link"}
@@ -57,7 +57,7 @@ export default function TopNav() {
             </Menubar.Item>
             <Menubar.Item class={"p-2"}>
               <Button
-                class={"w-full inline-block"}
+                class={"inline-block w-full"}
                 as={A}
                 href="/config/driver"
                 variant={"link"}
