@@ -248,7 +248,7 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
           <Field name={"amount"} type={"number"}>
             {(store) => (
               <TextFieldRoot
-                onChange={(value) => setValue(form, "amount", parseInt(value))}
+                onChange={(value) => setValue(form, "amount", Number(value))}
                 validationState={store.error ? "invalid" : "valid"}
               >
                 <TextField type={"tel"} placeholder={"Monto"} />
