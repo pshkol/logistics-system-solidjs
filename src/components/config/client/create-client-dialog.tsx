@@ -22,7 +22,11 @@ const createNewClient = async (values: ClientSchema) => {
   });
 };
 
-export function CreateClientDialog() {
+type CreateClientDialogProps = {
+  onClientCreated: () => void;
+};
+
+export function CreateClientDialog(props: CreateClientDialogProps) {
   const [open, setOpen] = createSignal(false);
 
   const handleCreateNewClient = async (values: ClientSchema) => {
@@ -34,6 +38,7 @@ export function CreateClientDialog() {
       })
       .then(() => {
         setOpen(false);
+        props.onClientCreated();
       });
   };
 
