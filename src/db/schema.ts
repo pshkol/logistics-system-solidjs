@@ -65,3 +65,10 @@ export const driverSchema = pgTable("driver", {
 export const driverSchemaRelations = relations(driverSchema, ({ many }) => ({
   movements: many(movementSchema),
 }));
+
+export const clientSchema = pgTable("client", {
+  id: serial("id").primaryKey().notNull(),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});

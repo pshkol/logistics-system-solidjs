@@ -34,7 +34,9 @@ export default function TopNav() {
         <Menubar.Trigger
           as={Button}
           variant={
-            isActive("/config/movement-type") || isActive("/config/driver")
+            isActive("/config/movement-type") ||
+            isActive("/config/driver") ||
+            isActive("/config/client")
               ? "default"
               : "link"
           }
@@ -63,6 +65,16 @@ export default function TopNav() {
                 variant={"link"}
               >
                 Conductores
+              </Button>
+            </Menubar.Item>
+            <Menubar.Item class={"p-2"}>
+              <Button
+                class={"inline-block w-full"}
+                as={A}
+                href="/config/client"
+                variant={"link"}
+              >
+                Clientes
               </Button>
             </Menubar.Item>
           </Menubar.Content>

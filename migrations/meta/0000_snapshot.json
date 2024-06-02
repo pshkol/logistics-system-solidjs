@@ -1,7 +1,5 @@
 {
-  "id": "0af265e6-f599-49c0-9788-dc546cfdecbe",
-  "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.movement_type": {
@@ -50,8 +48,10 @@
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "0af265e6-f599-49c0-9788-dc546cfdecbe",
+  "prevId": "00000000-0000-0000-0000-000000000000"
 }

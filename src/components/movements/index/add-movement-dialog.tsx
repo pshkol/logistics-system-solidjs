@@ -107,11 +107,6 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
                     (item) => item.name === value,
                   );
 
-                  console.log({
-                    isDriverRequired: movementType?.isDriverRequired ?? false,
-                    movementTypeId: movementType?.id ?? 0,
-                  });
-
                   setValues(form, {
                     isDriverRequired: movementType?.isDriverRequired ?? false,
                     movementTypeId: movementType?.id ?? 0,

@@ -1,7 +1,5 @@
 {
-  "id": "a301c925-73ee-491e-b20f-4be06101440b",
-  "prevId": "b6bbc681-fdb6-4158-b84d-f69f864a393f",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.movement": {
@@ -52,15 +50,15 @@
         "movement_movement_type_id_movement_type_id_fk": {
           "name": "movement_movement_type_id_movement_type_id_fk",
           "tableFrom": "movement",
-          "tableTo": "movement_type",
           "columnsFrom": [
             "movement_type_id"
           ],
+          "tableTo": "movement_type",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -122,8 +120,10 @@
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "a301c925-73ee-491e-b20f-4be06101440b",
+  "prevId": "b6bbc681-fdb6-4158-b84d-f69f864a393f"
 }

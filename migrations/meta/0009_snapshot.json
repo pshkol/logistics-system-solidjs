@@ -1,7 +1,5 @@
 {
-  "id": "0ee2d51f-0611-429b-8e84-8665f1f7886c",
-  "prevId": "0377cc21-320c-4527-a3d4-438a67999a61",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.driver": {
@@ -100,28 +98,28 @@
         "movement_movement_type_id_movement_type_id_fk": {
           "name": "movement_movement_type_id_movement_type_id_fk",
           "tableFrom": "movement",
-          "tableTo": "movement_type",
           "columnsFrom": [
             "movement_type_id"
           ],
+          "tableTo": "movement_type",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "movement_driver_id_driver_id_fk": {
           "name": "movement_driver_id_driver_id_fk",
           "tableFrom": "movement",
-          "tableTo": "driver",
           "columnsFrom": [
             "driver_id"
           ],
+          "tableTo": "driver",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -189,8 +187,10 @@
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "0ee2d51f-0611-429b-8e84-8665f1f7886c",
+  "prevId": "0377cc21-320c-4527-a3d4-438a67999a61"
 }

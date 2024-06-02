@@ -71,6 +71,13 @@
       "when": 1717353332743,
       "tag": "0009_foamy_marten_broadcloak",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1717361349284,
+      "tag": "0010_quiet_bushwacker",
+      "breakpoints": true
     }
   ]
 }

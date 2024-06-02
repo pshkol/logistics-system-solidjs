@@ -1,7 +1,45 @@
 {
+  "id": "2bb4a54a-aedc-4bc3-a2df-786cb13275ee",
+  "prevId": "0ee2d51f-0611-429b-8e84-8665f1f7886c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.client": {
+      "name": "client",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.driver": {
       "name": "driver",
       "schema": "",
@@ -72,6 +110,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "driver_id": {
+          "name": "driver_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -92,15 +136,28 @@
         "movement_movement_type_id_movement_type_id_fk": {
           "name": "movement_movement_type_id_movement_type_id_fk",
           "tableFrom": "movement",
+          "tableTo": "movement_type",
           "columnsFrom": [
             "movement_type_id"
           ],
-          "tableTo": "movement_type",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "movement_driver_id_driver_id_fk": {
+          "name": "movement_driver_id_driver_id_fk",
+          "tableFrom": "movement",
+          "tableTo": "driver",
+          "columnsFrom": [
+            "driver_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -168,10 +225,8 @@
   },
   "schemas": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "0377cc21-320c-4527-a3d4-438a67999a61",
-  "prevId": "ca5d0255-1485-4c8d-9788-024a525af136"
+    "tables": {}
+  }
 }
