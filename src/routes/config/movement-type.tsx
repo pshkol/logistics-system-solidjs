@@ -1,12 +1,11 @@
-import { Button } from "~/components/ui/button";
-import CreateMovementTypeDialog from "~/components/config/movements/create-movement-type-dialog";
+import CreateMovementTypeDialog from "~/components/config/movement-type/create-movement-type-dialog";
 import { createResource, createSignal, Show } from "solid-js";
 import { DataTable } from "~/components/ui/data-table";
-import { movementTypeTable } from "~/components/config/movements/movement-types-table-columns";
+import { movementTypeTable } from "~/components/config/movement-type/movement-types-table-columns";
 import { PaginationState } from "@tanstack/solid-table";
 import { getMovementTypes } from "~/actions/movement-type/get-movement-types";
 
-export default function Config() {
+export default function MovementType() {
   const [pagination, setPagination] = createSignal<PaginationState>({
     pageSize: 10,
     pageIndex: 0,
@@ -15,22 +14,12 @@ export default function Config() {
   const [data, { refetch }] = createResource(pagination, getMovementTypes);
 
   return (
-    <main class={"container pt-5 h-[calc(100%-50px)] flex gap-2"}>
-      <aside
-        class={
-          "border-r-[1px] flex max-w-[16rem] h-full flex-col flex-1 border-r-gray-200"
-        }
-      >
-        <ul>
-          <li>
-            <Button variant={"ghost"}>Categorias de ingresos / gastos</Button>
-          </li>
-        </ul>
+    <main class={"container pt-5 flex-col flex gap-2"}>
+      <aside class={"flex justify-between items-center"}>
+        <h1 class={"text-lg font-semibold"}>Tipos de ingresos / gastos</h1>
+        <CreateMovementTypeDialog refreshMovementTypes={refetch} />
       </aside>
-      <section class={"flex flex-col flex-1 w-full"}>
-        <div class={"flex justify-end mb-5"}>
-          <CreateMovementTypeDialog refreshMovementTypes={refetch} />
-        </div>
+      <section class={"mt-5"}>
         <Show when={data.state === "ready"} fallback={<p>Cargando...</p>}>
           <DataTable
             pagination={pagination()}

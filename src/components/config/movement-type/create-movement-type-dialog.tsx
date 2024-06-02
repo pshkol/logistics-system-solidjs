@@ -59,9 +59,9 @@ export default function CreateMovementTypeDialog({
   const handleSubmit: SubmitHandler<MovementTypeSchema> = async (values) => {
     setIsPending(true);
     await toast.promise(createMovementType(values), {
-      loading: "Creando categoría...",
-      success: "Categoría creada correctamente",
-      error: "Error al crear la categoría",
+      loading: "Creando...",
+      success: "Tipo de ingreso / gasto creado correctamente",
+      error: "Error al crear el tipo de ingreso / gasto",
     });
     setOpenDialog(false);
     refreshMovementTypes();
@@ -72,14 +72,14 @@ export default function CreateMovementTypeDialog({
     <Dialog open={openDialog()} onOpenChange={(value) => setOpenDialog(value)}>
       <DialogTrigger
         as={(props: DialogTriggerProps) => (
-          <Button {...props}>Crear categoría</Button>
+          <Button {...props}>Crear tipo de ingreso / gasto</Button>
         )}
       />
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Crear categoría</DialogTitle>
+          <DialogTitle>Crear tipo de ingreso / gasto</DialogTitle>
           <DialogDescription>
-            Formulario para crear una nueva categoría de ingresos / gastos
+            Formulario para crear un tipo de ingreso / gasto
           </DialogDescription>
           <Form onSubmit={handleSubmit} class={"flex flex-col gap-4 py-4"}>
             <Field name={"name"}>

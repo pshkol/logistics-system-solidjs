@@ -14,7 +14,8 @@ export default function Movements() {
 
   return (
     <main class={"container p-5"}>
-      <aside class={"flex justify-end"}>
+      <aside class={"flex justify-between items-center"}>
+        <h1 class={"text-lg font-semibold"}>Ingresos / Gastos</h1>
         <AddMovementDialog />
       </aside>
       <section class={"mt-5"}>
