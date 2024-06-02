@@ -46,3 +46,11 @@ export const movementSchemaRelations = relations(movementSchema, ({ one }) => ({
     fields: [movementSchema.movementTypeId],
   }),
 }));
+
+export const driverSchema = pgTable("driver", {
+  id: serial("id").primaryKey().notNull(),
+  name: text("name").notNull(),
+  lastName: text("last_name").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});

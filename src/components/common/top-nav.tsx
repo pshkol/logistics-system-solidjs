@@ -44,6 +44,11 @@ export default function TopNav() {
                 Tipos de ingresos / gastos
               </Button>
             </Menubar.Item>
+            <Menubar.Item class={"p-2"}>
+              <Button as={A} href="/config/driver" variant={"link"}>
+                Conductores
+              </Button>
+            </Menubar.Item>
           </Menubar.Content>
         </Menubar.Portal>
       </Menubar.Menu>
