@@ -5,7 +5,7 @@ import { getDrivers } from "~/actions/driver/get-drivers";
 import { PaginationState } from "@tanstack/solid-table";
 import { driversTableColumns } from "~/components/config/driver/drivers-table-columns";
 
-export default function Driver() {
+export default function Index() {
   const [pagination, setPagination] = createSignal<PaginationState>({
     pageSize: 10,
     pageIndex: 0,
