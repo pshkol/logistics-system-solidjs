@@ -42,14 +42,26 @@ export default function TopNav() {
           Configuración
         </Menubar.Trigger>
         <Menubar.Portal>
-          <Menubar.Content class={"p-1 bg-white rounded-lg shadow-md"}>
+          <Menubar.Content
+            class={"p-1 w-[15rem] bg-white rounded-lg shadow-md"}
+          >
             <Menubar.Item class={"p-2"}>
-              <Button as={A} href="/config/movement-type" variant={"link"}>
+              <Button
+                class={"w-full inline-block"}
+                as={A}
+                href="/config/movement-type"
+                variant={"link"}
+              >
                 Tipos de ingresos / gastos
               </Button>
             </Menubar.Item>
             <Menubar.Item class={"p-2"}>
-              <Button as={A} href="/config/driver" variant={"link"}>
+              <Button
+                class={"w-full inline-block"}
+                as={A}
+                href="/config/driver"
+                variant={"link"}
+              >
                 Conductores
               </Button>
             </Menubar.Item>
