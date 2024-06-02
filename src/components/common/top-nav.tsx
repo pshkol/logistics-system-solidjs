@@ -22,7 +22,7 @@ export default function TopNav() {
       <Menubar.Menu>
         <Menubar.Trigger>
           <Button
-            variant={isActive("/movement-type") ? "default" : "link"}
+            variant={isActive("/movements") ? "default" : "link"}
             as={A}
             href="/movements"
           >
@@ -31,10 +31,11 @@ export default function TopNav() {
         </Menubar.Trigger>
       </Menubar.Menu>
       <Menubar.Menu>
-        <Menubar.Trigger>
-          <Button variant={isActive("/config") ? "default" : "link"}>
-            Configuración
-          </Button>
+        <Menubar.Trigger
+          as={Button}
+          variant={isActive("/config/movement-type") ? "default" : "link"}
+        >
+          Configuración
         </Menubar.Trigger>
         <Menubar.Portal>
           <Menubar.Content class={"p-1 bg-white rounded-lg shadow-md"}>
