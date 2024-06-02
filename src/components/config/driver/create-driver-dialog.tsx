@@ -23,7 +23,11 @@ const createDriver = async (values: DriverSchema) => {
   });
 };
 
-export default function CreateDriverDialog() {
+type CreateDriverDialogProps = {
+  refreshDrivers: () => void;
+};
+
+export default function CreateDriverDialog(props: CreateDriverDialogProps) {
   const [open, setOpen] = createSignal(false);
 
   const handleCreateDriver = async (values: DriverSchema) => {
@@ -33,7 +37,8 @@ export default function CreateDriverDialog() {
         success: "Conductor creado",
         error: "Error al crear conductor",
       })
-      .then(() => {
+      .then(async () => {
+        props.refreshDrivers();
         setOpen(false);
       });
   };
