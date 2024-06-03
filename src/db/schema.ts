@@ -75,6 +75,19 @@ export const driverSchemaRelations = relations(driverSchema, ({ many }) => ({
   movements: many(movementSchema),
 }));
 
+export const driverMovementPaymentSchema = pgTable("driver_movement_payment", {
+  id: serial("id").primaryKey().notNull(),
+  driverId: integer("driver_id")
+    .references(() => driverSchema.id)
+    .notNull(),
+  movementTypeId: integer("movement_type_id")
+    .references(() => movementTypeSchema.id)
+    .notNull(),
+  amount: numeric("amount", { scale: 2 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});
+
 export const clientSchema = pgTable("client", {
   id: serial("id").primaryKey().notNull(),
   name: text("name").notNull(),

@@ -5,12 +5,20 @@ import { db } from "~/db/db";
 import { count, desc } from "drizzle-orm";
 import { movementTypeSchema } from "~/db/schema";
 
-export const getMovementTypes = async (pagination?: PaginationState) => {
+export type GetMovementTypesInput = {
+  isDriverRequired?: boolean;
+} & PaginationState;
+
+export const getMovementTypes = async (props: GetMovementTypesInput) => {
   const [data, typesCount] = await Promise.all([
     db.query.movementTypeSchema.findMany({
+      where: (movementType, { eq }) =>
+        props.isDriverRequired
+          ? eq(movementType.isDriverRequired, props.isDriverRequired)
+          : undefined,
       orderBy: [desc(movementTypeSchema.createdAt)],
-      offset: (pagination?.pageIndex ?? 0) * (pagination?.pageSize ?? 0),
-      limit: pagination?.pageSize,
+      offset: (props?.pageIndex ?? 0) * (props?.pageSize ?? 0),
+      limit: props?.pageSize,
     }),
     db
       .select({
@@ -23,7 +31,7 @@ export const getMovementTypes = async (pagination?: PaginationState) => {
   return {
     data,
     pageCount: Math.ceil(
-      pagination?.pageSize ? Math.ceil(typesCount / pagination.pageSize) : 0,
+      props?.pageSize ? Math.ceil(typesCount / props.pageSize) : 0,
     ),
   };
 };

@@ -1,5 +1,5 @@
 import { createForm, valiForm } from "@modular-forms/solid";
-import { ClientSchema } from "~/validations/config/client";
+import { ClientSchema } from "~/validations/config/client-schema";
 import {
   TextField,
   TextFieldErrorMessage,
@@ -20,7 +20,7 @@ export default function ClientForm(props: ClientFormProps) {
   return (
     <Form onSubmit={props.onValidSubmit} class={"flex flex-col gap-2"}>
       <Field name={"name"} type={"string"}>
-        {(store, props) => (
+        {(store, { onInput, ...props }) => (
           <TextFieldRoot validationState={store.error ? "invalid" : "valid"}>
             <TextFieldLabel>Nombre</TextFieldLabel>
             <TextField {...props} />

@@ -105,7 +105,7 @@ export default function CreateMovementTypeDialog({
           </DialogDescription>
           <Form onSubmit={handleSubmit} class={"flex flex-col gap-4 py-4"}>
             <Field name={"name"} type={"string"}>
-              {(store, props) => (
+              {(store, { onInput, ...props }) => (
                 <TextFieldRoot
                   validationState={store.error ? "invalid" : "valid"}
                 >

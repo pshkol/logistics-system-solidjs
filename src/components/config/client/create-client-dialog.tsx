@@ -9,7 +9,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { DialogTriggerProps } from "@kobalte/core/dialog";
 import ClientForm from "~/components/config/client/client-form";
-import { ClientSchema } from "~/validations/config/client";
+import { ClientSchema } from "~/validations/config/client-schema";
 import { db } from "~/db/db";
 import { clientSchema } from "~/db/schema";
 import { toast } from "solid-toast";
