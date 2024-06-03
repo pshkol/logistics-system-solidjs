@@ -30,6 +30,7 @@ export const movementTypeSchemaRelations = relations(
   movementTypeSchema,
   ({ many }) => ({
     movements: many(movementSchema),
+    driverMovementPayments: many(driverMovementPaymentSchema),
   }),
 );
 
@@ -73,6 +74,7 @@ export const driverSchema = pgTable("driver", {
 
 export const driverSchemaRelations = relations(driverSchema, ({ many }) => ({
   movements: many(movementSchema),
+  movementPayments: many(driverMovementPaymentSchema),
 }));
 
 export const driverMovementPaymentSchema = pgTable("driver_movement_payment", {
@@ -87,6 +89,20 @@ export const driverMovementPaymentSchema = pgTable("driver_movement_payment", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
+
+export const driverMovementPaymentSchemaRelations = relations(
+  driverMovementPaymentSchema,
+  ({ one }) => ({
+    driver: one(driverSchema, {
+      references: [driverSchema.id],
+      fields: [driverMovementPaymentSchema.driverId],
+    }),
+    movementType: one(movementTypeSchema, {
+      references: [movementTypeSchema.id],
+      fields: [driverMovementPaymentSchema.movementTypeId],
+    }),
+  }),
+);
 
 export const clientSchema = pgTable("client", {
   id: serial("id").primaryKey().notNull(),
@@ -122,3 +138,19 @@ export const clientDebtSchemaRelations = relations(
     }),
   }),
 );
+
+export const debtToDriverSchema = pgTable("debt_to_driver", {
+  id: serial("id").primaryKey().notNull(),
+  driverId: integer("driver_id")
+    .references(() => driverSchema.id)
+    .notNull(),
+  amount: numeric("amount", { scale: 2 }).notNull(),
+  driverMovementPaymentId: integer("driver_movement_payment_id").references(
+    () => driverMovementPaymentSchema.id,
+  ),
+  movementId: integer("movement_id")
+    .references(() => movementSchema.id)
+    .notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});

@@ -20,18 +20,20 @@ export default function DriverForm(props: DriverFormProps) {
   return (
     <Form onSubmit={props.onValidSubmit} class={"flex flex-col gap-2"}>
       <Field name={"name"}>
-        {(store, { onInput, ...props }) => (
+        {(store, props) => (
           <TextFieldRoot validationState={store.error ? "invalid" : "valid"}>
             <TextFieldLabel>Nombre</TextFieldLabel>
+            {/*@ts-expect-error - It's ok*/}
             <TextField {...store} {...props} />
             <TextFieldErrorMessage>{store.error}</TextFieldErrorMessage>
           </TextFieldRoot>
         )}
       </Field>
       <Field name={"lastName"}>
-        {(store, { onInput, ...props }) => (
+        {(store, props) => (
           <TextFieldRoot validationState={store.error ? "invalid" : "valid"}>
             <TextFieldLabel>Apellido</TextFieldLabel>
+            {/*@ts-expect-error - It's ok*/}
             <TextField {...store} {...props} />
             <TextFieldErrorMessage>{store.error}</TextFieldErrorMessage>
           </TextFieldRoot>

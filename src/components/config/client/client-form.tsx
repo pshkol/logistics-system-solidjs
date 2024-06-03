@@ -20,9 +20,10 @@ export default function ClientForm(props: ClientFormProps) {
   return (
     <Form onSubmit={props.onValidSubmit} class={"flex flex-col gap-2"}>
       <Field name={"name"} type={"string"}>
-        {(store, { onInput, ...props }) => (
+        {(store, props) => (
           <TextFieldRoot validationState={store.error ? "invalid" : "valid"}>
             <TextFieldLabel>Nombre</TextFieldLabel>
+            {/*@ts-expect-error - It's ok*/}
             <TextField {...props} />
             <TextFieldErrorMessage>{store.error}</TextFieldErrorMessage>
           </TextFieldRoot>

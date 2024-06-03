@@ -18,6 +18,8 @@ export const MovementSchema = object(
     movementTypeId: number("El tipo de movimiento es requerido", [minValue(1)]),
     isDriverRequired: boolean(),
     isClientRequired: boolean(),
+    driverMovementPaymentId: optional(number()),
+    driverMovementPaymentAmount: optional(number()),
     amount: coerce(
       number("El monto es requerido", [
         minValue(0.01, "El monto debe ser mayor a 0"),
@@ -43,6 +45,15 @@ export const MovementSchema = object(
         return safeParse(number([minValue(1)]), data.clientId).success;
       }, "El cliente es requerido"),
       ["clientId"],
+    ),
+    forward(
+      // Requires driver payment if isDriverRequired is true
+      custom((data) => {
+        if (!data.isDriverRequired) return true;
+        return safeParse(number([minValue(1)]), data.driverMovementPaymentId)
+          .success;
+      }, "El pago del conductor es requerido"),
+      ["driverId"],
     ),
   ],
 );

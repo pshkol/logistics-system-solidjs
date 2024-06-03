@@ -37,10 +37,16 @@ import {
   TextFieldRoot,
 } from "~/components/ui/textfield";
 import { db } from "~/db/db";
-import { clientDebtSchema, movementSchema } from "~/db/schema";
+import {
+  clientDebtSchema,
+  debtToDriverSchema,
+  driverMovementPaymentSchema,
+  movementSchema,
+} from "~/db/schema";
 import { toast } from "solid-toast";
 import { getDrivers } from "~/actions/driver/get-drivers";
 import { getClients } from "~/actions/client/get-clients";
+import { getDriverCurrentPayment } from "~/actions/driver/get-driver-current-payment";
 
 const createMovement = async (values: MovementSchema) => {
   "use server";
@@ -66,13 +72,26 @@ const createMovement = async (values: MovementSchema) => {
         .then((res) => (clientDebtId = res[0].id));
     }
 
-    await tx.insert(movementSchema).values({
-      amount: values.amount.toString(),
-      description: values.description,
-      movementTypeId: values.movementTypeId,
-      driverId: values.driverId,
-      customerDebtId: clientDebtId,
-    });
+    const movement = await tx
+      .insert(movementSchema)
+      .values({
+        amount: values.amount.toString(),
+        description: values.description,
+        movementTypeId: values.movementTypeId,
+        driverId: values.driverId,
+        customerDebtId: clientDebtId,
+      })
+      .returning()
+      .then((res) => res[0]);
+
+    if (values.driverMovementPaymentId) {
+      await tx.insert(debtToDriverSchema).values({
+        driverId: values.driverId!,
+        amount: values.driverMovementPaymentAmount!.toString(),
+        driverMovementPaymentId: values.driverMovementPaymentId!,
+        movementId: movement.id,
+      });
+    }
   });
 };
 
@@ -126,6 +145,12 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
           <Field name={"isClientRequired"} type={"boolean"}>
             {() => null}
           </Field>
+          <Field name={"driverMovementPaymentId"} type={"number"}>
+            {() => null}
+          </Field>
+          <Field name={"driverMovementPaymentAmount"} type={"number"}>
+            {() => null}
+          </Field>
           <Field name={"movementTypeId"} type={"number"}>
             {(store) => (
               <Combobox
@@ -142,6 +167,8 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
                     driverId: undefined,
                     isClientRequired: movementType?.isClientRequired ?? false,
                     clientId: undefined,
+                    driverMovementPaymentId: undefined,
+                    driverMovementPaymentAmount: undefined,
                   });
                 }}
                 itemComponent={(props) => (
@@ -175,14 +202,22 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
                     ) ?? []
                   }
                   placeholder="Conductor"
-                  onChange={(value) => {
-                    setValue(
-                      form,
-                      "driverId",
+                  onChange={async (value) => {
+                    const driverId =
                       drivers()?.data.find(
                         (item) => `${item.name} ${item.lastName}` === value,
-                      )?.id ?? 0,
-                    );
+                      )?.id ?? 0;
+
+                    const driverCurrentPayment =
+                      await getDriverCurrentPayment(driverId);
+
+                    setValues(form, {
+                      driverId: driverId,
+                      driverMovementPaymentId: driverCurrentPayment?.id ?? 0,
+                      driverMovementPaymentAmount: driverCurrentPayment?.amount
+                        ? Number(driverCurrentPayment.amount)
+                        : 0,
+                    });
                   }}
                   itemComponent={(props) => (
                     <ComboboxItem item={props.item}>
@@ -204,6 +239,14 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
                 </Combobox>
               )}
             </Field>
+          </Show>
+          <Show when={getValue(form, "driverMovementPaymentId")}>
+            <p class={"rounded-lg bg-amber-200 p-2 text-sm text-amber-500"}>
+              {`Pago al conductor: ${new Intl.NumberFormat("es-AR", {
+                currency: "ARS",
+                style: "currency",
+              }).format(getValue(form, "driverMovementPaymentAmount") ?? 0)}`}
+            </p>
           </Show>
           <Show
             when={
