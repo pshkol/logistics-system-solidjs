@@ -3,8 +3,13 @@ import { GetMovementTypesOutput } from "~/actions/movement-type/get-movement-typ
 import { FaSolidArrowDown, FaSolidArrowUp } from "solid-icons/fa";
 import AddMovementPaymentDialog from "~/components/config/driver/driver-details/add-movement-payment-dialog";
 
+type DriverMovementTypesTableColumnsProps = {
+  driverId: number;
+  onPaymentAdded: () => void;
+};
+
 export const driverMovementTypesTableColumns = (
-  driverId: number,
+  props: DriverMovementTypesTableColumnsProps,
 ): ColumnDef<GetMovementTypesOutput["data"][number]>[] => {
   return [
     {
@@ -28,12 +33,26 @@ export const driverMovementTypesTableColumns = (
       },
     },
     {
+      id: "currentPayment",
+      header: "Pago actual",
+      cell: ({ row }) => {
+        return new Intl.NumberFormat("es-AR", {
+          currency: "ARS",
+          style: "currency",
+        }).format(
+          (row.original.driverMovementPayments.sort((a, b) => b.id - a.id).at(0)
+            ?.amount as unknown as number) ?? 0,
+        );
+      },
+    },
+    {
       id: "actions",
       cell: ({ row }) => (
         <div class={"flex justify-end"}>
           <AddMovementPaymentDialog
             movementTypeId={row.original.id}
-            driverId={driverId}
+            driverId={props.driverId}
+            onPaymentAdded={props.onPaymentAdded}
           />
         </div>
       ),

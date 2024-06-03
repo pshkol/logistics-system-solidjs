@@ -19,6 +19,9 @@ export const getMovementTypes = async (props: GetMovementTypesInput) => {
       orderBy: [desc(movementTypeSchema.createdAt)],
       offset: (props?.pageIndex ?? 0) * (props?.pageSize ?? 0),
       limit: props?.pageSize,
+      with: {
+        driverMovementPayments: true,
+      },
     }),
     db
       .select({

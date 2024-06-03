@@ -11,7 +11,7 @@ export default function DriverDetails() {
   const driverId = parse(coerce(number([minValue(1)]), Number), params.id);
 
   const [driver] = createResource({ driverId: driverId }, getDriver);
-  const [movementTypes] = createResource(
+  const [movementTypes, { refetch }] = createResource(
     { pageSize: 0, pageIndex: 0, isDriverRequired: true },
     getMovementTypes,
   );
@@ -29,10 +29,18 @@ export default function DriverDetails() {
         </section>
         <section class={"mt-5"}>
           <h2 class={"mb-2 text-xl font-semibold"}>Tipos de movimientos</h2>
-          <DataTable
-            columns={driverMovementTypesTableColumns(driverId)}
-            data={movementTypes()?.data ?? []}
-          />
+          <Show
+            when={movementTypes.state === "ready"}
+            fallback={<div>Cargando...</div>}
+          >
+            <DataTable
+              columns={driverMovementTypesTableColumns({
+                driverId: driverId,
+                onPaymentAdded: refetch,
+              })}
+              data={movementTypes()?.data ?? []}
+            />
+          </Show>
         </section>
       </Show>
     </main>

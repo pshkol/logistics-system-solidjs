@@ -30,6 +30,7 @@ const createDriverMovementPayment = async (
 type AddMovementPaymentDialogProps = {
   driverId: number;
   movementTypeId: number;
+  onPaymentAdded: () => void;
 };
 
 export default function AddMovementPaymentDialog(
@@ -45,6 +46,7 @@ export default function AddMovementPaymentDialog(
         error: "Error al agregar costo",
       })
       .then(() => {
+        props.onPaymentAdded();
         setOpen(false);
       });
   };
