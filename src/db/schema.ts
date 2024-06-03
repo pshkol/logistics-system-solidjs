@@ -41,6 +41,7 @@ export const movementSchema = pgTable("movement", {
   movementTypeId: integer("movement_type_id").references(
     () => movementTypeSchema.id,
   ),
+  clientId: integer("client_id").references(() => clientSchema.id),
   driverId: integer("driver_id").references(() => driverSchema.id),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
