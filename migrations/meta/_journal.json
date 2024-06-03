@@ -148,6 +148,13 @@
       "when": 1717420471155,
       "tag": "0020_nostalgic_morph",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1717420854915,
+      "tag": "0021_curvy_naoko",
+      "breakpoints": true
     }
   ]
 }

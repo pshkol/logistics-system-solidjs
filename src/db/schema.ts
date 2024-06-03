@@ -41,9 +41,6 @@ export const movementSchema = pgTable("movement", {
   movementTypeId: integer("movement_type_id").references(
     () => movementTypeSchema.id,
   ),
-  customerDebtId: integer("customer_debt_id").references(
-    () => clientDebtSchema.id,
-  ),
   driverId: integer("driver_id").references(() => driverSchema.id),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
@@ -59,8 +56,8 @@ export const movementSchemaRelations = relations(movementSchema, ({ one }) => ({
     fields: [movementSchema.driverId],
   }),
   clientDebt: one(clientDebtSchema, {
-    references: [clientDebtSchema.id],
-    fields: [movementSchema.customerDebtId],
+    references: [clientDebtSchema.movementId],
+    fields: [movementSchema.id],
   }),
 }));
 
@@ -120,6 +117,7 @@ export const clientDebtSchema = pgTable("client_debt", {
   clientId: integer("client_id")
     .references(() => clientSchema.id)
     .notNull(),
+  movementId: integer("movement_id").references(() => movementSchema.id),
   amount: numeric("amount", { scale: 2 }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
@@ -133,8 +131,8 @@ export const clientDebtSchemaRelations = relations(
       fields: [clientDebtSchema.clientId],
     }),
     movement: one(movementSchema, {
-      references: [movementSchema.customerDebtId],
-      fields: [clientDebtSchema.id],
+      references: [movementSchema.id],
+      fields: [clientDebtSchema.movementId],
     }),
   }),
 );

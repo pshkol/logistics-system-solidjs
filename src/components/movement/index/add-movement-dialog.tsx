@@ -40,7 +40,6 @@ import { db } from "~/db/db";
 import {
   clientDebtSchema,
   debtToDriverSchema,
-  driverMovementPaymentSchema,
   movementSchema,
 } from "~/db/schema";
 import { toast } from "solid-toast";
@@ -61,17 +60,6 @@ const createMovement = async (values: MovementSchema) => {
   await db.transaction(async (tx) => {
     let clientDebtId;
 
-    if (movementType.doCreateClientDebt) {
-      await tx
-        .insert(clientDebtSchema)
-        .values({
-          amount: values.amount.toString(),
-          clientId: values.clientId!,
-        })
-        .returning()
-        .then((res) => (clientDebtId = res[0].id));
-    }
-
     const movement = await tx
       .insert(movementSchema)
       .values({
@@ -79,10 +67,21 @@ const createMovement = async (values: MovementSchema) => {
         description: values.description,
         movementTypeId: values.movementTypeId,
         driverId: values.driverId,
-        customerDebtId: clientDebtId,
       })
       .returning()
       .then((res) => res[0]);
+
+    if (movementType.doCreateClientDebt) {
+      await tx
+        .insert(clientDebtSchema)
+        .values({
+          amount: values.amount.toString(),
+          clientId: values.clientId!,
+          movementId: movement.id,
+        })
+        .returning()
+        .then((res) => (clientDebtId = res[0].id));
+    }
 
     if (values.driverMovementPaymentId) {
       await tx.insert(debtToDriverSchema).values({
