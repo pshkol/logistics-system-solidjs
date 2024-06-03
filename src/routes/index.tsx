@@ -6,13 +6,16 @@ const getRealMoney = async () => {
   const realMoney = await db.query.movementSchema.findMany({
     with: {
       clientDebt: true,
+      movementType: true,
     },
   });
   return realMoney.reduce((acc, movement) => {
     if (movement.clientDebt) {
       return acc;
     }
-    return acc + Number(movement.amount);
+    return movement.movementType?.type === "IN"
+      ? acc + Number(movement.amount)
+      : acc - Number(movement.amount);
   }, 0);
 };
 

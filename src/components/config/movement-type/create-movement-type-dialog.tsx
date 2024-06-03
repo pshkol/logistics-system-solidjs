@@ -67,6 +67,8 @@ export default function CreateMovementTypeDialog({
   const [form, { Form, Field }] = createForm<MovementTypeSchema>({
     validate: valiForm(MovementTypeSchema),
     initialValues: {
+      isClientRequired: false,
+      doCreateClientDebt: false,
       isDriverRequired: false,
     },
   });
