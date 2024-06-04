@@ -202,8 +202,10 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
                         (item) => `${item.name} ${item.lastName}` === value,
                       )?.id ?? 0;
 
-                    const driverCurrentPayment =
-                      await getDriverCurrentPayment(driverId);
+                    const driverCurrentPayment = await getDriverCurrentPayment(
+                      driverId,
+                      getValue(form, "movementTypeId")!,
+                    );
 
                     setValues(form, {
                       driverId: driverId,
