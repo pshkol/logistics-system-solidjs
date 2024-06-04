@@ -60,6 +60,10 @@ export const movementSchemaRelations = relations(movementSchema, ({ one }) => ({
     references: [clientDebtSchema.movementId],
     fields: [movementSchema.id],
   }),
+  debtsToDriver: one(debtToDriverSchema, {
+    references: [debtToDriverSchema.movementId],
+    fields: [movementSchema.id],
+  }),
 }));
 
 export const driverSchema = pgTable("driver", {
@@ -73,6 +77,7 @@ export const driverSchema = pgTable("driver", {
 export const driverSchemaRelations = relations(driverSchema, ({ many }) => ({
   movements: many(movementSchema),
   movementPayments: many(driverMovementPaymentSchema),
+  debtsToDriver: many(debtToDriverSchema),
 }));
 
 export const driverMovementPaymentSchema = pgTable("driver_movement_payment", {
@@ -90,7 +95,7 @@ export const driverMovementPaymentSchema = pgTable("driver_movement_payment", {
 
 export const driverMovementPaymentSchemaRelations = relations(
   driverMovementPaymentSchema,
-  ({ one }) => ({
+  ({ one, many }) => ({
     driver: one(driverSchema, {
       references: [driverSchema.id],
       fields: [driverMovementPaymentSchema.driverId],
@@ -99,6 +104,7 @@ export const driverMovementPaymentSchemaRelations = relations(
       references: [movementTypeSchema.id],
       fields: [driverMovementPaymentSchema.movementTypeId],
     }),
+    debtsToDriver: many(debtToDriverSchema),
   }),
 );
 
@@ -153,3 +159,21 @@ export const debtToDriverSchema = pgTable("debt_to_driver", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
+
+export const debtToDriverSchemaRelations = relations(
+  debtToDriverSchema,
+  ({ one }) => ({
+    driver: one(driverSchema, {
+      references: [driverSchema.id],
+      fields: [debtToDriverSchema.driverId],
+    }),
+    driverMovementPayment: one(driverMovementPaymentSchema, {
+      references: [driverMovementPaymentSchema.id],
+      fields: [debtToDriverSchema.driverMovementPaymentId],
+    }),
+    movement: one(movementSchema, {
+      references: [movementSchema.id],
+      fields: [debtToDriverSchema.movementId],
+    }),
+  }),
+);
