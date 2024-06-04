@@ -4,9 +4,11 @@ import { createResource, Show } from "solid-js";
 import { getDriver } from "~/actions/driver/get-driver";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import DriverMovementTypePayments from "~/components/driver/driver-details/driver-movement-type-payments";
+import DebtsToDriver from "~/components/driver/driver-details/debts-to-driver";
 
 enum TabsEnum {
   MOVEMENT_TYPES = "MOVEMENT_TYPES",
+  DEBTS_TO_DRIVER = "DEBTS_TO_DRIVER",
 }
 
 export default function DriverDetails() {
@@ -32,9 +34,15 @@ export default function DriverDetails() {
               <TabsTrigger value={TabsEnum.MOVEMENT_TYPES}>
                 Tipos de movimientos
               </TabsTrigger>
+              <TabsTrigger value={TabsEnum.DEBTS_TO_DRIVER}>
+                Deudas al conductor
+              </TabsTrigger>
             </TabsList>
             <TabsContent value={TabsEnum.MOVEMENT_TYPES}>
               <DriverMovementTypePayments driverId={driverId} />
+            </TabsContent>
+            <TabsContent value={TabsEnum.DEBTS_TO_DRIVER}>
+              <DebtsToDriver driverId={driverId} />
             </TabsContent>
           </Tabs>
         </section>
