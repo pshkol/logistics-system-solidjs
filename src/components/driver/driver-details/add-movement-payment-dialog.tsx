@@ -9,7 +9,7 @@ import {
 import { Button } from "~/components/ui/button";
 import { FaSolidPlus } from "solid-icons/fa";
 import { DialogTriggerProps } from "@kobalte/core/dialog";
-import AddDriverMovementCostForm from "~/components/config/driver/driver-details/add-driver-movement-cost-form";
+import AddDriverMovementCostForm from "~/components/driver/driver-details/add-driver-movement-cost-form";
 import { DriverMovementPaymentSchema } from "~/validations/config/driver-movement-payment-schema";
 import { db } from "~/db/db";
 import { driverMovementPaymentSchema } from "~/db/schema";

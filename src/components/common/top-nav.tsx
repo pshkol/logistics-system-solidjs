@@ -31,12 +31,21 @@ export default function TopNav() {
         </Menubar.Trigger>
       </Menubar.Menu>
       <Menubar.Menu>
+        <Menubar.Trigger>
+          <Button
+            variant={isActive("/driver") ? "default" : "link"}
+            as={A}
+            href="/driver"
+          >
+            Conductores
+          </Button>
+        </Menubar.Trigger>
+      </Menubar.Menu>
+      <Menubar.Menu>
         <Menubar.Trigger
           as={Button}
           variant={
-            isActive("/config/movement-type") ||
-            isActive("/config/driver") ||
-            isActive("/config/client")
+            isActive("/config/movement-type") || isActive("/config/client")
               ? "default"
               : "link"
           }
@@ -55,16 +64,6 @@ export default function TopNav() {
                 variant={"link"}
               >
                 Tipos de ingresos / gastos
-              </Button>
-            </Menubar.Item>
-            <Menubar.Item class={"p-2"}>
-              <Button
-                class={"inline-block w-full"}
-                as={A}
-                href="/config/driver"
-                variant={"link"}
-              >
-                Conductores
               </Button>
             </Menubar.Item>
             <Menubar.Item class={"p-2"}>

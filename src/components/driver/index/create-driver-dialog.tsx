@@ -8,7 +8,7 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { DialogTriggerProps } from "@kobalte/core/dialog";
-import DriverForm from "~/components/config/driver/index/driver-form";
+import DriverForm from "~/components/driver/index/driver-form";
 import { db } from "~/db/db";
 import { driverSchema } from "~/db/schema";
 import { DriverSchema } from "~/validations/config/driver-schema";

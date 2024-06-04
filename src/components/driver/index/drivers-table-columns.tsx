@@ -27,7 +27,7 @@ export const driversTableColumns: ColumnDef<
           variant={"ghost"}
           class={"w-6"}
           as={A}
-          href={`/config/driver/${row.original.id}`}
+          href={`/driver/${row.original.id}`}
         >
           <FaSolidArrowRight size={"18"} />
         </Button>

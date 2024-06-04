@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { GetMovementTypesOutput } from "~/actions/movement-type/get-movement-types";
 import { FaSolidArrowDown, FaSolidArrowUp } from "solid-icons/fa";
-import AddMovementPaymentDialog from "~/components/config/driver/driver-details/add-movement-payment-dialog";
+import AddMovementPaymentDialog from "~/components/driver/driver-details/add-movement-payment-dialog";
 
 type DriverMovementTypesTableColumnsProps = {
   driverId: number;

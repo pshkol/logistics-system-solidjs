@@ -1,9 +1,9 @@
-import CreateDriverDialog from "~/components/config/driver/index/create-driver-dialog";
+import CreateDriverDialog from "~/components/driver/index/create-driver-dialog";
 import { DataTable } from "~/components/ui/data-table";
 import { createResource, createSignal, Show } from "solid-js";
 import { getDrivers } from "~/actions/driver/get-drivers";
 import { PaginationState } from "@tanstack/solid-table";
-import { driversTableColumns } from "~/components/config/driver/index/drivers-table-columns";
+import { driversTableColumns } from "~/components/driver/index/drivers-table-columns";
 
 export default function Index() {
   const [pagination, setPagination] = createSignal<PaginationState>({
