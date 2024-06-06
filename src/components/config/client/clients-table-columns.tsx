@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { GetClientsOutput } from "~/actions/client/get-clients";
+import { format, fromUnixTime } from "date-fns";
 
 export const clientsTableColumns: ColumnDef<
   GetClientsOutput["data"][number]
@@ -15,6 +16,6 @@ export const clientsTableColumns: ColumnDef<
   {
     id: "createdAt",
     header: "Fecha de creación",
-    cell: ({ row }) => new Date(row.original.createdAt!).toLocaleString(),
+    cell: ({ row }) => format(fromUnixTime(row.original.createdAt), "PPp"),
   },
 ];

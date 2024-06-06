@@ -31,7 +31,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { db } from "~/db/db";
-import { movementDirectionTypeEnum, movementTypeSchema } from "~/db/schema";
+import { MovementDirectionTypeEnum, movementTypeSchema } from "~/db/schema";
 import { createEffect, createSignal } from "solid-js";
 import { toast } from "solid-toast";
 import { errorMessageClass } from "~/utils/error-message-class";
@@ -123,11 +123,11 @@ export default function CreateMovementTypeDialog({
                 <Select
                   value={store.value}
                   onChange={(
-                    value: (typeof movementDirectionTypeEnum.enumValues)[number],
+                    value: (typeof MovementDirectionTypeEnum)[number],
                   ) => {
                     setValue(form, "type", value);
                   }}
-                  options={movementDirectionTypeEnum.enumValues}
+                  options={MovementDirectionTypeEnum as unknown as string[]}
                   placeholder="Selecciona un tipo"
                   itemComponent={(props) => (
                     <SelectItem item={props.item}>

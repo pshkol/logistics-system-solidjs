@@ -5,6 +5,7 @@ import { getDriver } from "~/actions/driver/get-driver";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import DriverMovementTypePayments from "~/components/driver/driver-details/driver-movement-type-payments";
 import DebtsToDriver from "~/components/driver/driver-details/debts-to-driver";
+import { format, fromUnixTime } from "date-fns";
 
 enum TabsEnum {
   MOVEMENT_TYPES = "MOVEMENT_TYPES",
@@ -26,7 +27,7 @@ export default function DriverDetails() {
           >{`${driver()?.name} ${driver()?.lastName}`}</h1>
           <p
             class={"text-sm"}
-          >{`Creado el ${new Date(driver()?.createdAt!).toLocaleString()}`}</p>
+          >{`Creado el ${format(fromUnixTime(driver()?.createdAt!), "PPp")}`}</p>
         </section>
         <section class={"mt-5"}>
           <Tabs defaultValue={TabsEnum.MOVEMENT_TYPES}>

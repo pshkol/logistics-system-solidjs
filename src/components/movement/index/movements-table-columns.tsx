@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { GetMovementsOutput } from "~/actions/movement/get-movements";
 import { FaSolidArrowDown, FaSolidArrowUp } from "solid-icons/fa";
+import { format, fromUnixTime } from "date-fns";
 
 export const movementsTableColumns: ColumnDef<
   GetMovementsOutput["data"][number]
@@ -38,6 +39,6 @@ export const movementsTableColumns: ColumnDef<
   {
     id: "createdAt",
     header: "Fecha",
-    cell: ({ row }) => new Date(row.original.createdAt!).toLocaleDateString(),
+    cell: ({ row }) => format(fromUnixTime(row.original.createdAt), "PPp"),
   },
 ];

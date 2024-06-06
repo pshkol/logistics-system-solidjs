@@ -1,29 +1,27 @@
-import {
-  pgTable,
-  text,
-  serial,
-  timestamp,
-  pgEnum,
-  integer,
-  numeric,
-  boolean,
-} from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
+import { sqliteTable, integer, text, real } from "drizzle-orm/sqlite-core";
 
-export const movementDirectionTypeEnum = pgEnum("movement_direction_type", [
-  "IN",
-  "OUT",
-]);
+export const MovementDirectionTypeEnum = ["IN", "OUT"] as const;
 
-export const movementTypeSchema = pgTable("movement_type", {
-  id: serial("id").primaryKey().notNull(),
+export const movementTypeSchema = sqliteTable("movement_type", {
+  id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
   name: text("name").notNull(),
-  type: movementDirectionTypeEnum("movement_direction_type"),
-  isDriverRequired: boolean("is_driver_required").notNull(),
-  doCreateClientDebt: boolean("do_create_client_debt").notNull(),
-  isClientRequired: boolean("is_client_required").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  type: text("type", { enum: MovementDirectionTypeEnum }).notNull(),
+  isDriverRequired: integer("is_driver_required", {
+    mode: "boolean",
+  }).notNull(),
+  doCreateClientDebt: integer("do_create_client_debt", {
+    mode: "boolean",
+  }).notNull(),
+  isClientRequired: integer("is_client_required", {
+    mode: "boolean",
+  }).notNull(),
+  createdAt: integer("created_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: integer("updated_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
 });
 
 export const movementTypeSchemaRelations = relations(
@@ -34,17 +32,21 @@ export const movementTypeSchemaRelations = relations(
   }),
 );
 
-export const movementSchema = pgTable("movement", {
-  id: serial("id").primaryKey().notNull(),
-  amount: numeric("amount", { scale: 2 }).notNull(),
+export const movementSchema = sqliteTable("movement", {
+  id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
+  amount: real("amount").notNull(),
   description: text("description"),
   movementTypeId: integer("movement_type_id").references(
     () => movementTypeSchema.id,
   ),
   clientId: integer("client_id").references(() => clientSchema.id),
   driverId: integer("driver_id").references(() => driverSchema.id),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  createdAt: integer("created_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: integer("updated_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
 });
 
 export const movementSchemaRelations = relations(movementSchema, ({ one }) => ({
@@ -66,12 +68,16 @@ export const movementSchemaRelations = relations(movementSchema, ({ one }) => ({
   }),
 }));
 
-export const driverSchema = pgTable("driver", {
-  id: serial("id").primaryKey().notNull(),
+export const driverSchema = sqliteTable("driver", {
+  id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
   name: text("name").notNull(),
   lastName: text("last_name").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  createdAt: integer("created_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: integer("updated_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
 });
 
 export const driverSchemaRelations = relations(driverSchema, ({ many }) => ({
@@ -80,18 +86,25 @@ export const driverSchemaRelations = relations(driverSchema, ({ many }) => ({
   debtsToDriver: many(debtToDriverSchema),
 }));
 
-export const driverMovementPaymentSchema = pgTable("driver_movement_payment", {
-  id: serial("id").primaryKey().notNull(),
-  driverId: integer("driver_id")
-    .references(() => driverSchema.id)
-    .notNull(),
-  movementTypeId: integer("movement_type_id")
-    .references(() => movementTypeSchema.id)
-    .notNull(),
-  amount: numeric("amount", { scale: 2 }).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
-});
+export const driverMovementPaymentSchema = sqliteTable(
+  "driver_movement_payment",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
+    driverId: integer("driver_id")
+      .references(() => driverSchema.id)
+      .notNull(),
+    movementTypeId: integer("movement_type_id")
+      .references(() => movementTypeSchema.id)
+      .notNull(),
+    amount: real("amount").notNull(),
+    createdAt: integer("created_at")
+      .default(sql`(unixepoch())`)
+      .notNull(),
+    updatedAt: integer("updated_at")
+      .default(sql`(unixepoch())`)
+      .notNull(),
+  },
+);
 
 export const driverMovementPaymentSchemaRelations = relations(
   driverMovementPaymentSchema,
@@ -108,26 +121,34 @@ export const driverMovementPaymentSchemaRelations = relations(
   }),
 );
 
-export const clientSchema = pgTable("client", {
-  id: serial("id").primaryKey().notNull(),
+export const clientSchema = sqliteTable("client", {
+  id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
   name: text("name").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  createdAt: integer("created_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: integer("updated_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
 });
 
 export const clientSchemaRelations = relations(clientSchema, ({ many }) => ({
   debts: many(clientDebtSchema),
 }));
 
-export const clientDebtSchema = pgTable("client_debt", {
-  id: serial("id").primaryKey().notNull(),
+export const clientDebtSchema = sqliteTable("client_debt", {
+  id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
   clientId: integer("client_id")
     .references(() => clientSchema.id)
     .notNull(),
   movementId: integer("movement_id").references(() => movementSchema.id),
-  amount: numeric("amount", { scale: 2 }).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  amount: real("amount").notNull(),
+  createdAt: integer("created_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: integer("updated_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
 });
 
 export const clientDebtSchemaRelations = relations(
@@ -144,20 +165,24 @@ export const clientDebtSchemaRelations = relations(
   }),
 );
 
-export const debtToDriverSchema = pgTable("debt_to_driver", {
-  id: serial("id").primaryKey().notNull(),
+export const debtToDriverSchema = sqliteTable("debt_to_driver", {
+  id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
   driverId: integer("driver_id")
     .references(() => driverSchema.id)
     .notNull(),
-  amount: numeric("amount", { scale: 2 }).notNull(),
+  amount: real("amount").notNull(),
   driverMovementPaymentId: integer("driver_movement_payment_id").references(
     () => driverMovementPaymentSchema.id,
   ),
   movementId: integer("movement_id")
     .references(() => movementSchema.id)
     .notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  createdAt: integer("created_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: integer("updated_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
 });
 
 export const debtToDriverSchemaRelations = relations(

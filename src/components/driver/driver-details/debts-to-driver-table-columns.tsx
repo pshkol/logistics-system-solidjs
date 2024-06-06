@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { GetDebtsToDriverOutput } from "~/actions/driver/get-debts-to-driver";
+import { format, fromUnixTime } from "date-fns";
 
 export const debtsToDriverTableColumns: ColumnDef<
   GetDebtsToDriverOutput[number]
@@ -24,6 +25,6 @@ export const debtsToDriverTableColumns: ColumnDef<
   {
     accessorKey: "createdAt",
     header: "Fecha creación",
-    cell: ({ row }) => new Date(row.original.createdAt!).toLocaleString(),
+    cell: ({ row }) => format(fromUnixTime(row.original.createdAt), "PPp"),
   },
 ];

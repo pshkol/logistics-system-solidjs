@@ -1,1 +1,0 @@
-ALTER TABLE "movement" DROP COLUMN IF EXISTS "amount";
