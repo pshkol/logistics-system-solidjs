@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@kobalte/core':
-        specifier: ^0.13.2
+        specifier: ^0.13.3
         version: 0.13.3(solid-js@1.8.17)
       '@libsql/client':
         specifier: ^0.6.2

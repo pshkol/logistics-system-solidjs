@@ -1,84 +1,49 @@
-import { A, useLocation } from "@solidjs/router";
-import * as Menubar from "@kobalte/core/menubar";
-import { Button } from "~/components/ui/button";
+import { A } from "@solidjs/router";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuDescription,
+  NavigationMenuIcon,
+  NavigationMenuItem,
+  NavigationMenuLabel,
+  NavigationMenuLink,
+  NavigationMenuTrigger,
+} from "~/components/ui/navigation-menu";
 
 export default function TopNav() {
-  const location = useLocation();
-
-  const isActive = (path: string) => path === location.pathname;
-
   return (
-    <Menubar.Root
-      as={"nav"}
-      class={"flex gap-3 border-b-[1px] border-b-neutral-300 p-2"}
-    >
-      <Menubar.Menu>
-        <Menubar.Trigger>
-          <Button variant={isActive("/") ? "default" : "link"} as={A} href="/">
-            General
-          </Button>
-        </Menubar.Trigger>
-      </Menubar.Menu>
-      <Menubar.Menu>
-        <Menubar.Trigger>
-          <Button
-            variant={isActive("/movements") ? "default" : "link"}
-            as={A}
-            href="/movements"
-          >
-            Ingresos / Gastos
-          </Button>
-        </Menubar.Trigger>
-      </Menubar.Menu>
-      <Menubar.Menu>
-        <Menubar.Trigger>
-          <Button
-            variant={isActive("/driver") ? "default" : "link"}
-            as={A}
-            href="/driver"
-          >
-            Conductores
-          </Button>
-        </Menubar.Trigger>
-      </Menubar.Menu>
-      <Menubar.Menu>
-        <Menubar.Trigger
-          as={Button}
-          variant={
-            isActive("/config/movement-type") || isActive("/config/client")
-              ? "default"
-              : "link"
-          }
-        >
+    <NavigationMenu class={"container mt-1"} orientation={"horizontal"}>
+      <NavigationMenuTrigger as={A} href="/">
+        General
+      </NavigationMenuTrigger>
+      <NavigationMenuTrigger as={A} href="/movements">
+        Ingresos / Gastos
+      </NavigationMenuTrigger>
+      <NavigationMenuTrigger as={A} href="/driver">
+        Conductores
+      </NavigationMenuTrigger>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger>
           Configuración
-        </Menubar.Trigger>
-        <Menubar.Portal>
-          <Menubar.Content
-            class={"w-[15rem] rounded-lg bg-white p-1 shadow-md"}
-          >
-            <Menubar.Item class={"p-2"}>
-              <Button
-                class={"inline-block w-full"}
-                as={A}
-                href="/config/movement-type"
-                variant={"link"}
-              >
-                Tipos de ingresos / gastos
-              </Button>
-            </Menubar.Item>
-            <Menubar.Item class={"p-2"}>
-              <Button
-                class={"inline-block w-full"}
-                as={A}
-                href="/config/client"
-                variant={"link"}
-              >
-                Clientes
-              </Button>
-            </Menubar.Item>
-          </Menubar.Content>
-        </Menubar.Portal>
-      </Menubar.Menu>
-    </Menubar.Root>
+          <NavigationMenuIcon />
+        </NavigationMenuTrigger>
+        <NavigationMenuContent class="grid grid-cols-1 gap-3 md:w-[500px] lg:w-[500px]">
+          <NavigationMenuLink as={A} href="/config/movement-type">
+            <NavigationMenuLabel>
+              Tipos de ingresos / gastos
+            </NavigationMenuLabel>
+            <NavigationMenuDescription>
+              Administración de tipos de ingresos / gastos
+            </NavigationMenuDescription>
+          </NavigationMenuLink>
+          <NavigationMenuLink as={A} href="/config/client">
+            <NavigationMenuLabel>Clientes</NavigationMenuLabel>
+            <NavigationMenuDescription>
+              Administración de clientes
+            </NavigationMenuDescription>
+          </NavigationMenuLink>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+    </NavigationMenu>
   );
 }
