@@ -214,6 +214,7 @@ export const paymentToDriverSchema = sqliteTable("payment_to_driver", {
   debtToDriverId: integer("debt_to_driver_id").references(
     () => debtToDriverSchema.id,
   ),
+  paymentDate: integer("payment_date", { mode: "timestamp" }).notNull(),
   createdAt: integer("created_at")
     .default(sql`(unixepoch())`)
     .notNull(),

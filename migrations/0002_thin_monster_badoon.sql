@@ -1,0 +1,1 @@
+ALTER TABLE `payment_to_driver` ADD `payment_date` integer NOT NULL;

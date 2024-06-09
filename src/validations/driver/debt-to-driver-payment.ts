@@ -2,10 +2,13 @@ import {
   check,
   forward,
   InferInput,
+  isoDate,
+  maxValue,
   minValue,
   number,
   object,
   pipe,
+  string,
 } from "valibot";
 
 export const DebtToDriverPaymentSchema = pipe(
@@ -16,6 +19,14 @@ export const DebtToDriverPaymentSchema = pipe(
     paymentAmount: pipe(
       number("El monto del pago es requerido"),
       minValue(0.01, "El monto del pago debe ser mayor a 0"),
+    ),
+    date: pipe(
+      string("La fecha del pago es requerida"),
+      isoDate("Fecha inválida"),
+      maxValue(
+        new Date().toISOString(),
+        "La fecha del pago no puede ser mayor a la fecha actual",
+      ),
     ),
   }),
   forward(

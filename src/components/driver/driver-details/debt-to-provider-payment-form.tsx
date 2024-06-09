@@ -25,6 +25,7 @@ export default function DebtToProviderPaymentForm(
       driverId: props.driverId,
       debtToDriverId: props.debtToDriverId,
       maxPaymentAmount: props.maxPaymentAmount,
+      date: new Date().toISOString().split("T")[0],
     },
   });
 
@@ -47,6 +48,21 @@ export default function DebtToProviderPaymentForm(
           >
             <TextFieldLabel>Costo</TextFieldLabel>
             <TextField {...store} {...props} />
+            <TextFieldErrorMessage>{store.error}</TextFieldErrorMessage>
+          </TextFieldRoot>
+        )}
+      </Field>
+      <Field name={"date"} type={"string"}>
+        {(store, { onInput, onChange, ...props }) => (
+          <TextFieldRoot
+            validationState={store.error ? "invalid" : "valid"}
+            onChange={(value) => {
+              setValue(form, "date", value);
+            }}
+            value={store.value}
+          >
+            <TextFieldLabel>Fecha</TextFieldLabel>
+            <TextField type={"date"} />
             <TextFieldErrorMessage>{store.error}</TextFieldErrorMessage>
           </TextFieldRoot>
         )}

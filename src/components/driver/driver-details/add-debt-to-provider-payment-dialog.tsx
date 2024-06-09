@@ -17,8 +17,8 @@ import DebtToProviderPaymentForm from "~/components/driver/driver-details/debt-t
 import { DebtToDriverPaymentSchema } from "~/validations/driver/debt-to-driver-payment";
 import { db } from "~/db/db";
 import { paymentToDriverSchema } from "~/db/schema";
-import { revalidate } from "@solidjs/router";
 import { createSignal } from "solid-js";
+import { set } from "date-fns";
 
 type AddDebtToProviderPaymentDialogProps = {
   driverId: number;
@@ -30,10 +30,21 @@ type AddDebtToProviderPaymentDialogProps = {
 const createPaymentToDriver = async (values: DebtToDriverPaymentSchema) => {
   "use server";
 
+  const [year, month, day] = values.date.split("-").map(Number);
+
   await db.insert(paymentToDriverSchema).values({
     amount: values.paymentAmount,
     debtToDriverId: values.debtToDriverId,
     driverId: values.driverId,
+    paymentDate: set(new Date(), {
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+      year,
+      month: month - 1,
+      date: day,
+    }),
   });
 };
 
