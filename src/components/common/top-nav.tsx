@@ -22,6 +22,9 @@ export default function TopNav() {
       <NavigationMenuTrigger as={A} href="/driver">
         Conductores
       </NavigationMenuTrigger>
+      <NavigationMenuTrigger as={A} href={"/client"}>
+        Clientes
+      </NavigationMenuTrigger>
       <NavigationMenuItem>
         <NavigationMenuTrigger>
           Configuración
@@ -34,12 +37,6 @@ export default function TopNav() {
             </NavigationMenuLabel>
             <NavigationMenuDescription>
               Administración de tipos de ingresos / gastos
-            </NavigationMenuDescription>
-          </NavigationMenuLink>
-          <NavigationMenuLink as={A} href="/config/client">
-            <NavigationMenuLabel>Clientes</NavigationMenuLabel>
-            <NavigationMenuDescription>
-              Administración de clientes
             </NavigationMenuDescription>
           </NavigationMenuLink>
         </NavigationMenuContent>
