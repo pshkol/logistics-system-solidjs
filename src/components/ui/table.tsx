@@ -67,7 +67,10 @@ const TableCell: Component<ComponentProps<"td">> = (props) => {
   const [local, others] = splitProps(props, ["class"]);
   return (
     <td
-      class={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", local.class)}
+      class={cn(
+        "h-14 px-4 align-middle [&:has([role=checkbox])]:pr-0",
+        local.class,
+      )}
       {...others}
     />
   );

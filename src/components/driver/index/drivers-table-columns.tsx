@@ -23,14 +23,16 @@ export const driversTableColumns: ColumnDef<
     id: "actions",
     cell: ({ row }) => {
       return (
-        <Button
-          variant={"ghost"}
-          class={"w-6"}
-          as={A}
-          href={`/driver/${row.original.id}`}
-        >
-          <FaSolidArrowRight size={"18"} />
-        </Button>
+        <div class={"flex justify-end"}>
+          <Button
+            variant={"ghost"}
+            class={"w-6"}
+            as={A}
+            href={`/driver/${row.original.id}`}
+          >
+            <FaSolidArrowRight size={"18"} />
+          </Button>
+        </div>
       );
     },
   },
