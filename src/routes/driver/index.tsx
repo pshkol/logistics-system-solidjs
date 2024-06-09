@@ -1,6 +1,6 @@
 import CreateDriverDialog from "~/components/driver/index/create-driver-dialog";
 import { DataTable } from "~/components/ui/data-table";
-import { createResource, createSignal, Show } from "solid-js";
+import { createEffect, createResource, createSignal, Show } from "solid-js";
 import { getDrivers } from "~/actions/driver/get-drivers";
 import { PaginationState } from "@tanstack/solid-table";
 import { driversTableColumns } from "~/components/driver/index/drivers-table-columns";
@@ -11,6 +11,11 @@ export default function Index() {
     pageIndex: 0,
   });
   const [drivers, { refetch }] = createResource(pagination, getDrivers);
+  const [isReady, setIsReady] = createSignal(false);
+
+  createEffect(() => {
+    setIsReady(!drivers.loading);
+  });
 
   return (
     <main class={"container flex flex-col gap-2 pt-5"}>
@@ -19,7 +24,7 @@ export default function Index() {
         <CreateDriverDialog refreshDrivers={refetch} />
       </aside>
       <section class={"mt-5"}>
-        <Show when={drivers()} fallback={"Cargando..."}>
+        <Show when={isReady()} fallback={"Cargando..."}>
           <DataTable
             pagination={pagination()}
             onPaginationChange={setPagination}

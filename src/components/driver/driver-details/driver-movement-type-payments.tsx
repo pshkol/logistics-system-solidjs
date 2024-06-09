@@ -1,4 +1,4 @@
-import { createResource, Show } from "solid-js";
+import { createEffect, createResource, createSignal, Show } from "solid-js";
 import { DataTable } from "~/components/ui/data-table";
 import { driverMovementTypesTableColumns } from "~/components/driver/driver-details/driver-movement-types-table-columns";
 import { getMovementTypes } from "~/actions/movement-type/get-movement-types";
@@ -15,8 +15,14 @@ export default function DriverMovementTypePayments(
     getMovementTypes,
   );
 
+  const [isReady, setIsReady] = createSignal(false);
+
+  createEffect(() => {
+    setIsReady(!movementTypes.loading);
+  });
+
   return (
-    <Show when={movementTypes()} fallback={<div>Cargando...</div>}>
+    <Show when={isReady()} fallback={<div>Cargando...</div>}>
       <DataTable
         columns={driverMovementTypesTableColumns({
           driverId: props.driverId,

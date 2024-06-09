@@ -1,5 +1,5 @@
 import AddMovementDialog from "~/components/movement/index/add-movement-dialog";
-import { createResource, createSignal, Show } from "solid-js";
+import { createEffect, createResource, createSignal, Show } from "solid-js";
 import { getMovements } from "~/actions/movement/get-movements";
 import { DataTable } from "~/components/ui/data-table";
 import { movementsTableColumns } from "~/components/movement/index/movements-table-columns";
@@ -12,6 +12,12 @@ export default function Movements() {
   });
   const [movements, { refetch }] = createResource(pagination, getMovements);
 
+  const [isReady, setIsReady] = createSignal(false);
+
+  createEffect(() => {
+    setIsReady(!movements.loading);
+  });
+
   return (
     <main class={"container p-5"}>
       <aside class={"flex items-center justify-between"}>
@@ -19,7 +25,7 @@ export default function Movements() {
         <AddMovementDialog refreshMovements={refetch} />
       </aside>
       <section class={"mt-5"}>
-        <Show when={movements()} fallback={"Cargando..."}>
+        <Show when={isReady()} fallback={"Cargando..."}>
           <DataTable
             columns={movementsTableColumns}
             pagination={pagination()}

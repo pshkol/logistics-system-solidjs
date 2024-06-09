@@ -24,6 +24,7 @@ type AddDebtToProviderPaymentDialogProps = {
   driverId: number;
   debtToDriverId: number;
   maxPaymentAmount: number;
+  onPaymentAdded: () => void;
 };
 
 const createPaymentToDriver = async (values: DebtToDriverPaymentSchema) => {
@@ -43,8 +44,8 @@ export default function AddDebtToProviderPaymentDialog(
 
   const handleCreatePayment = async (values: DebtToDriverPaymentSchema) => {
     await createPaymentToDriver(values).then(() => {
+      props.onPaymentAdded();
       setOpen(false);
-      revalidate("getDebtsToDriver");
     });
   };
 

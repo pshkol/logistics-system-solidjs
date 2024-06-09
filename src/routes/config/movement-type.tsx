@@ -1,5 +1,5 @@
 import CreateMovementTypeDialog from "~/components/config/movement-type/create-movement-type-dialog";
-import { createResource, createSignal, Show } from "solid-js";
+import { createEffect, createResource, createSignal, Show } from "solid-js";
 import { DataTable } from "~/components/ui/data-table";
 import { movementTypeTable } from "~/components/config/movement-type/movement-types-table-columns";
 import { PaginationState } from "@tanstack/solid-table";
@@ -13,6 +13,12 @@ export default function MovementType() {
 
   const [data, { refetch }] = createResource(pagination, getMovementTypes);
 
+  const [isReady, setIsReady] = createSignal(false);
+
+  createEffect(() => {
+    setIsReady(!data.loading);
+  });
+
   return (
     <main class={"container flex flex-col gap-2 pt-5"}>
       <aside class={"flex items-center justify-between"}>
@@ -20,7 +26,7 @@ export default function MovementType() {
         <CreateMovementTypeDialog refreshMovementTypes={refetch} />
       </aside>
       <section class={"mt-5"}>
-        <Show when={data()} fallback={<p>Cargando...</p>}>
+        <Show when={isReady()} fallback={<p>Cargando...</p>}>
           <DataTable
             pagination={pagination()}
             onPaginationChange={setPagination}
