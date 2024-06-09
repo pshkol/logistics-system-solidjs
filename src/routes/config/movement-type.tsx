@@ -20,7 +20,7 @@ export default function MovementType() {
         <CreateMovementTypeDialog refreshMovementTypes={refetch} />
       </aside>
       <section class={"mt-5"}>
-        <Show when={data.state === "ready"} fallback={<p>Cargando...</p>}>
+        <Show when={data()} fallback={<p>Cargando...</p>}>
           <DataTable
             pagination={pagination()}
             onPaginationChange={setPagination}

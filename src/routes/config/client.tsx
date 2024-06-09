@@ -20,7 +20,7 @@ export default function Client() {
         <CreateClientDialog onClientCreated={refetch} />
       </aside>
       <section class={"mt-5"}>
-        <Show when={clients.state === "ready"} fallback={<p>Cargando...</p>}>
+        <Show when={clients()} fallback={<p>Cargando...</p>}>
           <DataTable
             pagination={pagination()}
             onPaginationChange={setPagination}

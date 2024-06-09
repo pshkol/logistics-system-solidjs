@@ -19,7 +19,7 @@ export default function Movements() {
         <AddMovementDialog refreshMovements={refetch} />
       </aside>
       <section class={"mt-5"}>
-        <Show when={movements.state === "ready"} fallback={"Cargando..."}>
+        <Show when={movements()} fallback={"Cargando..."}>
           <DataTable
             columns={movementsTableColumns}
             pagination={pagination()}

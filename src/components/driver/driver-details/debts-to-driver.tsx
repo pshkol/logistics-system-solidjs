@@ -11,10 +11,7 @@ export default function DebtsToDriver(props: DebtsToDriverProps) {
   const [debtsToDriver] = createResource(props.driverId, getDebtsToDriver);
 
   return (
-    <Show
-      when={debtsToDriver.state === "ready"}
-      fallback={<div>Cargando...</div>}
-    >
+    <Show when={debtsToDriver()} fallback={<div>Cargando...</div>}>
       <DataTable
         columns={debtsToDriverTableColumns}
         data={debtsToDriver() ?? []}

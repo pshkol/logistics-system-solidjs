@@ -19,7 +19,7 @@ export default function Index() {
         <CreateDriverDialog refreshDrivers={refetch} />
       </aside>
       <section class={"mt-5"}>
-        <Show when={drivers.state === "ready"}>
+        <Show when={drivers()} fallback={"Cargando..."}>
           <DataTable
             pagination={pagination()}
             onPaginationChange={setPagination}

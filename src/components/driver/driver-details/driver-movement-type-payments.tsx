@@ -16,10 +16,7 @@ export default function DriverMovementTypePayments(
   );
 
   return (
-    <Show
-      when={movementTypes.state === "ready"}
-      fallback={<div>Cargando...</div>}
-    >
+    <Show when={movementTypes()} fallback={<div>Cargando...</div>}>
       <DataTable
         columns={driverMovementTypesTableColumns({
           driverId: props.driverId,
