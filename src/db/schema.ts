@@ -84,6 +84,7 @@ export const driverSchemaRelations = relations(driverSchema, ({ many }) => ({
   movements: many(movementSchema),
   movementPayments: many(driverMovementPaymentSchema),
   debtsToDriver: many(debtToDriverSchema),
+  paymentsToDriver: many(paymentToDriverSchema),
 }));
 
 export const driverMovementPaymentSchema = sqliteTable(
@@ -187,7 +188,7 @@ export const debtToDriverSchema = sqliteTable("debt_to_driver", {
 
 export const debtToDriverSchemaRelations = relations(
   debtToDriverSchema,
-  ({ one }) => ({
+  ({ one, many }) => ({
     driver: one(driverSchema, {
       references: [driverSchema.id],
       fields: [debtToDriverSchema.driverId],
@@ -199,6 +200,38 @@ export const debtToDriverSchemaRelations = relations(
     movement: one(movementSchema, {
       references: [movementSchema.id],
       fields: [debtToDriverSchema.movementId],
+    }),
+    paymentsToDriver: many(paymentToDriverSchema),
+  }),
+);
+
+export const paymentToDriverSchema = sqliteTable("payment_to_driver", {
+  id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
+  driverId: integer("driver_id")
+    .references(() => driverSchema.id)
+    .notNull(),
+  amount: real("amount").notNull(),
+  debtToDriverId: integer("debt_to_driver_id").references(
+    () => debtToDriverSchema.id,
+  ),
+  createdAt: integer("created_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: integer("updated_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+});
+
+export const paymentToDriverSchemaRelations = relations(
+  paymentToDriverSchema,
+  ({ one }) => ({
+    driver: one(driverSchema, {
+      references: [driverSchema.id],
+      fields: [paymentToDriverSchema.driverId],
+    }),
+    debtToDriver: one(debtToDriverSchema, {
+      references: [debtToDriverSchema.id],
+      fields: [paymentToDriverSchema.debtToDriverId],
     }),
   }),
 );

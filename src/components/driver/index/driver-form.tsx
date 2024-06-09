@@ -1,5 +1,5 @@
 import { createForm, valiForm } from "@modular-forms/solid";
-import { DriverSchema } from "~/validations/config/driver-schema";
+import { DriverSchema } from "~/validations/driver/driver-schema";
 import {
   TextField,
   TextFieldErrorMessage,

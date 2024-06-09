@@ -9,6 +9,9 @@ export function getDebtsToDriver(driverId: number) {
   return db.query.debtToDriverSchema.findMany({
     orderBy: [desc(debtToDriverSchema.createdAt)],
     where: (debtToDriver, { eq }) => eq(debtToDriver.driverId, driverId),
+    with: {
+      paymentsToDriver: true,
+    },
   });
 }
 

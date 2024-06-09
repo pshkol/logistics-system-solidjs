@@ -3,26 +3,49 @@ import { createResource } from "solid-js";
 
 const getRealMoney = async () => {
   "use server";
-  const realMoney = await db.query.movementSchema.findMany({
-    with: {
-      clientDebt: true,
-      movementType: true,
-    },
-  });
-  return realMoney.reduce((acc, movement) => {
-    if (movement.clientDebt) {
-      return acc;
-    }
-    return movement.movementType?.type === "IN"
-      ? acc + Number(movement.amount)
-      : acc - Number(movement.amount);
-  }, 0);
+  const [realMoney, paymentsToDrivers] = await Promise.all([
+    db.query.movementSchema.findMany({
+      with: {
+        clientDebt: true,
+        movementType: true,
+      },
+    }),
+    db.query.paymentToDriverSchema.findMany(),
+  ]);
+
+  const totalPaymentsToDrivers = paymentsToDrivers.reduce(
+    (acc, payment) => acc + Number(payment.amount),
+    0,
+  );
+
+  return (
+    realMoney.reduce((acc, movement) => {
+      if (movement.clientDebt) {
+        return acc;
+      }
+      return movement.movementType?.type === "IN"
+        ? acc + Number(movement.amount)
+        : acc - Number(movement.amount);
+    }, 0) - totalPaymentsToDrivers
+  );
 };
 
 const getDriversDebt = async () => {
   "use server";
-  const drivers = await db.query.debtToDriverSchema.findMany();
-  return drivers.reduce((acc, driver) => acc + Number(driver.amount), 0);
+  const [drivers, paymentsToDrivers] = await Promise.all([
+    db.query.debtToDriverSchema.findMany(),
+    db.query.paymentToDriverSchema.findMany(),
+  ]);
+
+  const totalPaymentsToDrivers = paymentsToDrivers.reduce(
+    (acc, payment) => acc + Number(payment.amount),
+    0,
+  );
+
+  return (
+    drivers.reduce((acc, driver) => acc + Number(driver.amount), 0) -
+    totalPaymentsToDrivers
+  );
 };
 
 const getClientsDebt = async () => {

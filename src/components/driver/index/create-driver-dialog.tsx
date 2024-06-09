@@ -11,7 +11,7 @@ import { DialogTriggerProps } from "@kobalte/core/dialog";
 import DriverForm from "~/components/driver/index/driver-form";
 import { db } from "~/db/db";
 import { driverSchema } from "~/db/schema";
-import { DriverSchema } from "~/validations/config/driver-schema";
+import { DriverSchema } from "~/validations/driver/driver-schema";
 import { toast } from "solid-toast";
 import { createSignal } from "solid-js";
 

@@ -1,5 +1,5 @@
 import { createForm, setValue, valiForm } from "@modular-forms/solid";
-import { DriverMovementPaymentSchema } from "~/validations/config/driver-movement-payment-schema";
+import { DriverMovementPaymentSchema } from "~/validations/driver/driver-movement-payment-schema";
 import {
   TextField,
   TextFieldErrorMessage,
