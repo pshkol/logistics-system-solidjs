@@ -1,35 +1,19 @@
-import {
-  Input,
-  minLength,
-  object,
-  picklist,
-  string,
-  boolean,
-  forward,
-  custom,
-} from "valibot";
+import { InferInput, minLength, object, picklist, string, boolean, forward, check, pipe } from "valibot"
 import { MovementDirectionTypeEnum } from "~/db/schema";
 
-export const MovementTypeSchema = object(
-  {
-    name: string("El nombre es requerido", [
-      minLength(1, "El nombre debe tener al menos 1 caracter"),
-    ]),
+export const MovementTypeSchema = pipe(object({
+    name: pipe(string("El nombre es requerido"), minLength(1, "El nombre debe tener al menos 1 caracter") ,),
     type: picklist(MovementDirectionTypeEnum, "El tipo es requerido"),
     isDriverRequired: boolean("El campo es requerido"),
     isClientRequired: boolean("El campo es requerido"),
     doCreateClientDebt: boolean("El campo es requerido"),
-  },
-  [
-    forward(
+  }), forward(
       // Requires client if doCreateClientDebt is true
-      custom((data) => {
+      check((data) => {
         if (!data.doCreateClientDebt) return true;
         return data.isClientRequired;
       }),
       ["isClientRequired"],
-    ),
-  ],
-);
+    ) ,);
 
-export type MovementTypeSchema = Input<typeof MovementTypeSchema>;
+export type MovementTypeSchema = InferInput<typeof MovementTypeSchema>;

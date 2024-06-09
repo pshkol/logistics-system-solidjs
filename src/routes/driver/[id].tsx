@@ -1,5 +1,5 @@
 import { useParams } from "@solidjs/router";
-import { coerce, minValue, number, parse } from "valibot";
+import { parse, pipe, unknown, transform } from "valibot";
 import { createResource, Show } from "solid-js";
 import { getDriver } from "~/actions/driver/get-driver";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -14,7 +14,7 @@ enum TabsEnum {
 
 export default function DriverDetails() {
   const params = useParams();
-  const driverId = parse(coerce(number([minValue(1)]), Number), params.id);
+  const driverId = parse(pipe(unknown(), transform(Number)), params.id);
 
   const [driver] = createResource({ driverId: driverId }, getDriver);
 

@@ -1,61 +1,37 @@
-import {
-  coerce,
-  Input,
-  minValue,
-  number,
-  object,
-  optional,
-  string,
-  forward,
-  custom,
-  boolean,
-  safeParse,
-} from "valibot";
+import { InferInput, minValue, number, object, optional, string, forward, check, boolean, safeParse, pipe, unknown, transform } from "valibot"
 
-export const MovementSchema = object(
-  {
+export const MovementSchema = pipe(object({
     description: optional(string()),
-    movementTypeId: number("El tipo de movimiento es requerido", [minValue(1)]),
+    movementTypeId: pipe(number("El tipo de movimiento es requerido"), minValue(1)),
     isDriverRequired: boolean(),
     isClientRequired: boolean(),
     driverMovementPaymentId: optional(number()),
     driverMovementPaymentAmount: optional(number()),
-    amount: coerce(
-      number("El monto es requerido", [
-        minValue(0.01, "El monto debe ser mayor a 0"),
-      ]),
-      Number,
-    ),
+    amount: pipe(unknown(), transform(Number)),
     driverId: optional(number()),
     clientId: optional(number()),
-  },
-  [
-    forward(
+  }), forward(
       // Requires driver if isDriverRequired is true
-      custom((data) => {
+      check((data) => {
         if (!data.isDriverRequired) return true;
-        return safeParse(number([minValue(1)]), data.driverId).success;
+        return safeParse(pipe(number(), minValue(1)), data.driverId).success;
       }, "El conductor es requerido"),
       ["driverId"],
-    ),
-    forward(
+    ) , forward(
       // Requires client if isClientRequired is true
-      custom((data) => {
+      check((data) => {
         if (!data.isClientRequired) return true;
-        return safeParse(number([minValue(1)]), data.clientId).success;
+        return safeParse(pipe(number(), minValue(1)), data.clientId).success;
       }, "El cliente es requerido"),
       ["clientId"],
-    ),
-    forward(
+    ) , forward(
       // Requires driver payment if isDriverRequired is true
-      custom((data) => {
+      check((data) => {
         if (!data.isDriverRequired) return true;
-        return safeParse(number([minValue(1)]), data.driverMovementPaymentId)
+        return safeParse(pipe(number(), minValue(1)), data.driverMovementPaymentId)
           .success;
       }, "El pago del conductor es requerido"),
       ["driverId"],
-    ),
-  ],
-);
+    ) ,);
 
-export type MovementSchema = Input<typeof MovementSchema>;
+export type MovementSchema = InferInput<typeof MovementSchema>;

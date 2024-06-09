@@ -1,13 +1,11 @@
-import { Input, minValue, number, object } from "valibot";
+import { InferInput, minValue, number, object, pipe } from "valibot"
 
 export const DriverMovementPaymentSchema = object({
-  driverId: number([minValue(1)]),
-  movementTypeId: number([minValue(1)]),
-  cost: number("El costo es requerido", [
-    minValue(0, "El costo debe ser mayor a 0"),
-  ]),
+  driverId: pipe(number(), minValue(1)),
+  movementTypeId: pipe(number(), minValue(1)),
+  cost: pipe(number("El costo es requerido"), minValue(0, "El costo debe ser mayor a 0") ,),
 });
 
-export type DriverMovementPaymentSchema = Input<
+export type DriverMovementPaymentSchema = InferInput<
   typeof DriverMovementPaymentSchema
 >;
