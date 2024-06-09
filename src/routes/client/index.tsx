@@ -1,9 +1,9 @@
-import { CreateClientDialog } from "~/components/client/create-client-dialog";
+import { CreateClientDialog } from "~/components/client/index/create-client-dialog";
 import { DataTable } from "~/components/ui/data-table";
 import { createSignal, Show, createResource, createEffect } from "solid-js";
 import { getClients } from "~/actions/client/get-clients";
 import { PaginationState } from "@tanstack/solid-table";
-import { clientsTableColumns } from "~/components/client/clients-table-columns";
+import { clientsTableColumns } from "~/components/client/index/clients-table-columns";
 
 export default function Index() {
   const [pagination, setPagination] = createSignal<PaginationState>({

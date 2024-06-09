@@ -8,7 +8,7 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { DialogTriggerProps } from "@kobalte/core/dialog";
-import ClientForm from "~/components/client/client-form";
+import ClientForm from "~/components/client/index/client-form";
 import { ClientSchema } from "~/validations/config/client-schema";
 import { db } from "~/db/db";
 import { clientSchema } from "~/db/schema";
