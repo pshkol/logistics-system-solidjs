@@ -7,7 +7,6 @@ import {
 import { createForm, setValue, valiForm } from "@modular-forms/solid";
 import { Button } from "~/components/ui/button";
 import { ClientPaymentSchema } from "~/validations/client/client-payment-schema";
-import { createEffect } from "solid-js";
 import { format } from "date-fns";
 
 type ClientPaymentFormProps = {
@@ -53,7 +52,7 @@ export default function ClientPaymentForm(props: ClientPaymentFormProps) {
         )}
       </Field>
       <Field name={"date"} type={"string"}>
-        {(store, { onInput, onChange, ...props }) => (
+        {(store) => (
           <TextFieldRoot
             validationState={store.error ? "invalid" : "valid"}
             onChange={(value) => {

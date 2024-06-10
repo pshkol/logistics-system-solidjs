@@ -54,7 +54,7 @@ export default function DebtToProviderPaymentForm(
         )}
       </Field>
       <Field name={"date"} type={"string"}>
-        {(store, { onInput, onChange, ...props }) => (
+        {(store) => (
           <TextFieldRoot
             validationState={store.error ? "invalid" : "valid"}
             onChange={(value) => {
