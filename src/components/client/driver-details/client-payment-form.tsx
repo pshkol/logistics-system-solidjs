@@ -6,25 +6,24 @@ import {
 } from "~/components/ui/textfield";
 import { createForm, setValue, valiForm } from "@modular-forms/solid";
 import { Button } from "~/components/ui/button";
-import { DebtToDriverPaymentSchema } from "~/validations/driver/debt-to-driver-payment-schema";
+import { ClientPaymentSchema } from "~/validations/client/client-payment-schema";
+import { createEffect } from "solid-js";
 import { format } from "date-fns";
 
-type DebtToProviderPaymentFormProps = {
-  driverId: number;
-  debtToDriverId: number;
+type ClientPaymentFormProps = {
+  clientId: number;
+  clientDebtId: number;
   maxPaymentAmount: number;
-  onValidSubmit: (values: DebtToDriverPaymentSchema) => Promise<void>;
+  onValidSubmit: (values: ClientPaymentSchema) => Promise<void>;
 };
 
-export default function DebtToProviderPaymentForm(
-  props: DebtToProviderPaymentFormProps,
-) {
-  const [form, { Field, Form }] = createForm<DebtToDriverPaymentSchema>({
-    validate: valiForm(DebtToDriverPaymentSchema),
+export default function ClientPaymentForm(props: ClientPaymentFormProps) {
+  const [form, { Field, Form }] = createForm<ClientPaymentSchema>({
+    validate: valiForm(ClientPaymentSchema),
     initialValues: {
       paymentAmount: 0,
-      driverId: props.driverId,
-      debtToDriverId: props.debtToDriverId,
+      clientId: props.clientId,
+      clientDebtId: props.clientDebtId,
       maxPaymentAmount: props.maxPaymentAmount,
       date: format(new Date(), "yyyy-MM-dd"),
     },
@@ -32,10 +31,10 @@ export default function DebtToProviderPaymentForm(
 
   return (
     <Form onSubmit={props.onValidSubmit} class={"flex flex-col gap-2"}>
-      <Field name={"driverId"} type={"number"}>
+      <Field name={"clientId"} type={"number"}>
         {() => null}
       </Field>
-      <Field name={"debtToDriverId"} type={"number"}>
+      <Field name={"clientDebtId"} type={"number"}>
         {() => null}
       </Field>
       <Field name={"maxPaymentAmount"} type={"number"}>

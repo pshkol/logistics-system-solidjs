@@ -17,6 +17,9 @@ export const getClientDebts = (_props: GetClientDebtsProps) => {
   return db.query.clientDebtSchema.findMany({
     orderBy: [desc(clientDebtSchema.createdAt)],
     where: (client, { eq }) => eq(client.clientId, props.clientId),
+    with: {
+      payments: true,
+    },
   });
 };
 

@@ -154,7 +154,7 @@ export const clientDebtSchema = sqliteTable("client_debt", {
 
 export const clientDebtSchemaRelations = relations(
   clientDebtSchema,
-  ({ one }) => ({
+  ({ one, many }) => ({
     client: one(clientSchema, {
       references: [clientSchema.id],
       fields: [clientDebtSchema.clientId],
@@ -162,6 +162,37 @@ export const clientDebtSchemaRelations = relations(
     movement: one(movementSchema, {
       references: [movementSchema.id],
       fields: [clientDebtSchema.movementId],
+    }),
+    payments: many(clientPaymentSchema),
+  }),
+);
+
+export const clientPaymentSchema = sqliteTable("client_payment", {
+  id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
+  clientId: integer("client_id")
+    .references(() => clientSchema.id)
+    .notNull(),
+  amount: real("amount").notNull(),
+  clientDebtId: integer("client_debt_id").references(() => clientDebtSchema.id),
+  paymentDate: integer("payment_date", { mode: "timestamp" }).notNull(),
+  createdAt: integer("created_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  updatedAt: integer("updated_at")
+    .default(sql`(unixepoch())`)
+    .notNull(),
+});
+
+export const clientPaymentSchemaRelations = relations(
+  clientPaymentSchema,
+  ({ one }) => ({
+    client: one(clientSchema, {
+      references: [clientSchema.id],
+      fields: [clientPaymentSchema.clientId],
+    }),
+    clientDebt: one(clientDebtSchema, {
+      references: [clientDebtSchema.id],
+      fields: [clientPaymentSchema.clientDebtId],
     }),
   }),
 );

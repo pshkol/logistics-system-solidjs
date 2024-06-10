@@ -10,11 +10,12 @@ import {
   pipe,
   string,
 } from "valibot";
+import { format } from "date-fns";
 
-export const DebtToDriverPaymentSchema = pipe(
+export const ClientPaymentSchema = pipe(
   object({
-    driverId: pipe(number(), minValue(1)),
-    debtToDriverId: pipe(number(), minValue(1)),
+    clientId: pipe(number(), minValue(1)),
+    clientDebtId: pipe(number(), minValue(1)),
     maxPaymentAmount: pipe(number(), minValue(0)),
     paymentAmount: pipe(
       number("El monto del pago es requerido"),
@@ -24,7 +25,7 @@ export const DebtToDriverPaymentSchema = pipe(
       string("La fecha del pago es requerida"),
       isoDate("Fecha inválida"),
       maxValue(
-        new Date().toISOString(),
+        format(new Date(), "yyyy-MM-dd"),
         "La fecha del pago no puede ser mayor a la fecha actual",
       ),
     ),
@@ -38,6 +39,4 @@ export const DebtToDriverPaymentSchema = pipe(
   ),
 );
 
-export type DebtToDriverPaymentSchema = InferInput<
-  typeof DebtToDriverPaymentSchema
->;
+export type ClientPaymentSchema = InferInput<typeof ClientPaymentSchema>;

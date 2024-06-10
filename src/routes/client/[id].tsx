@@ -7,7 +7,7 @@ import { getClient } from "~/actions/client/get-client";
 import ClientDebts from "~/components/client/driver-details/client-debts";
 
 enum TabsEnum {
-  DEBTS = "MOVEMENT_TYPES",
+  DEBTS = "DEBTS",
 }
 
 export default function DriverDetails() {

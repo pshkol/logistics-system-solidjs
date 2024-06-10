@@ -13,29 +13,29 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
-import DebtToProviderPaymentForm from "~/components/driver/driver-details/debt-to-provider-payment-form";
-import { DebtToDriverPaymentSchema } from "~/validations/driver/debt-to-driver-payment-schema";
 import { db } from "~/db/db";
-import { paymentToDriverSchema } from "~/db/schema";
+import { clientPaymentSchema } from "~/db/schema";
 import { createSignal } from "solid-js";
 import { set } from "date-fns";
+import ClientPaymentForm from "~/components/client/driver-details/client-payment-form";
+import { ClientPaymentSchema } from "~/validations/client/client-payment-schema";
 
-type AddDebtToProviderPaymentDialogProps = {
-  driverId: number;
-  debtToDriverId: number;
+type AddClientPaymentDialogProps = {
+  clientId: number;
+  clientDebtId: number;
   maxPaymentAmount: number;
   onPaymentAdded: () => void;
 };
 
-const createPaymentToDriver = async (values: DebtToDriverPaymentSchema) => {
+const createClientPayment = async (values: ClientPaymentSchema) => {
   "use server";
 
   const [year, month, day] = values.date.split("-").map(Number);
 
-  await db.insert(paymentToDriverSchema).values({
+  await db.insert(clientPaymentSchema).values({
     amount: values.paymentAmount,
-    debtToDriverId: values.debtToDriverId,
-    driverId: values.driverId,
+    clientDebtId: values.clientDebtId,
+    clientId: values.clientId,
     paymentDate: set(new Date(), {
       hours: 0,
       minutes: 0,
@@ -48,13 +48,13 @@ const createPaymentToDriver = async (values: DebtToDriverPaymentSchema) => {
   });
 };
 
-export default function AddDebtToProviderPaymentDialog(
-  props: AddDebtToProviderPaymentDialogProps,
+export default function AddClientPaymentDialog(
+  props: AddClientPaymentDialogProps,
 ) {
   const [open, setOpen] = createSignal(false);
 
-  const handleCreatePayment = async (values: DebtToDriverPaymentSchema) => {
-    await createPaymentToDriver(values).then(() => {
+  const handleCreatePayment = async (values: ClientPaymentSchema) => {
+    await createClientPayment(values).then(() => {
       props.onPaymentAdded();
       setOpen(false);
     });
@@ -73,11 +73,11 @@ export default function AddDebtToProviderPaymentDialog(
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Abonar deuda</DialogTitle>
-          <DialogDescription>Abonar deuda a un conductor</DialogDescription>
+          <DialogDescription>Abonar deuda de un cliente</DialogDescription>
         </DialogHeader>
-        <DebtToProviderPaymentForm
-          debtToDriverId={props.debtToDriverId}
-          driverId={props.driverId}
+        <ClientPaymentForm
+          clientDebtId={props.clientDebtId}
+          clientId={props.clientId}
           maxPaymentAmount={props.maxPaymentAmount}
           onValidSubmit={handleCreatePayment}
         />

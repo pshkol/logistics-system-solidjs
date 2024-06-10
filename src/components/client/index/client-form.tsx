@@ -1,5 +1,5 @@
 import { createForm, valiForm } from "@modular-forms/solid";
-import { ClientSchema } from "~/validations/config/client-schema";
+import { ClientSchema } from "~/validations/client/client-schema";
 import {
   TextField,
   TextFieldErrorMessage,

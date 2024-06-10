@@ -3,7 +3,7 @@ import { createResource } from "solid-js";
 
 const getRealMoney = async () => {
   "use server";
-  const [realMoney, paymentsToDrivers] = await Promise.all([
+  const [realMoney, paymentsToDrivers, clientPayments] = await Promise.all([
     db.query.movementSchema.findMany({
       with: {
         clientDebt: true,
@@ -11,9 +11,15 @@ const getRealMoney = async () => {
       },
     }),
     db.query.paymentToDriverSchema.findMany(),
+    db.query.clientPaymentSchema.findMany(),
   ]);
 
   const totalPaymentsToDrivers = paymentsToDrivers.reduce(
+    (acc, payment) => acc + Number(payment.amount),
+    0,
+  );
+
+  const totalClientPayments = clientPayments.reduce(
     (acc, payment) => acc + Number(payment.amount),
     0,
   );
@@ -26,7 +32,9 @@ const getRealMoney = async () => {
       return movement.movementType?.type === "IN"
         ? acc + Number(movement.amount)
         : acc - Number(movement.amount);
-    }, 0) - totalPaymentsToDrivers
+    }, 0) -
+    totalPaymentsToDrivers +
+    totalClientPayments
   );
 };
 
@@ -50,8 +58,18 @@ const getDriversDebt = async () => {
 
 const getClientsDebt = async () => {
   "use server";
-  const clients = await db.query.clientDebtSchema.findMany();
-  return clients.reduce((acc, client) => acc + Number(client.amount), 0);
+  const clients = await db.query.clientDebtSchema.findMany({
+    with: {
+      payments: true,
+    },
+  });
+  return clients.reduce(
+    (acc, client) =>
+      acc +
+      Number(client.amount) -
+      client.payments.reduce((acc, curr) => acc + curr.amount, 0),
+    0,
+  );
 };
 
 export default function Home() {
