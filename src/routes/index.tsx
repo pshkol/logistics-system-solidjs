@@ -49,7 +49,11 @@ export default function Home() {
         </TextFieldRoot>
       </section>
       <section class={"mt-5 grid grid-cols-3 gap-2"}>
-        <ErrorBoundary fallback={"Error1..."}>
+        <ErrorBoundary
+          fallback={(err, reset) => (
+            <div onClick={reset}>Error: {err.toString()}</div>
+          )}
+        >
           <Show when={realMoney()}>
             <div class={"rounded-lg bg-neutral-50 p-2 shadow-md"}>
               <p class={"text-sm font-semibold"}>Plata real</p>
