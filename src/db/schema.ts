@@ -41,10 +41,10 @@ export const movementSchema = sqliteTable("movement", {
   ),
   clientId: integer("client_id").references(() => clientSchema.id),
   driverId: integer("driver_id").references(() => driverSchema.id),
-  createdAt: integer("created_at")
+  createdAt: integer("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
-  updatedAt: integer("updated_at")
+  updatedAt: integer("updated_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
 });
@@ -145,10 +145,10 @@ export const clientDebtSchema = sqliteTable("client_debt", {
     .notNull(),
   movementId: integer("movement_id").references(() => movementSchema.id),
   amount: real("amount").notNull(),
-  createdAt: integer("created_at")
+  createdAt: integer("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
-  updatedAt: integer("updated_at")
+  updatedAt: integer("updated_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
 });
@@ -176,10 +176,10 @@ export const clientPaymentSchema = sqliteTable("client_payment", {
   amount: real("amount").notNull(),
   clientDebtId: integer("client_debt_id").references(() => clientDebtSchema.id),
   paymentDate: integer("payment_date", { mode: "timestamp" }).notNull(),
-  createdAt: integer("created_at")
+  createdAt: integer("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
-  updatedAt: integer("updated_at")
+  updatedAt: integer("updated_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
 });
@@ -210,10 +210,10 @@ export const debtToDriverSchema = sqliteTable("debt_to_driver", {
   movementId: integer("movement_id")
     .references(() => movementSchema.id)
     .notNull(),
-  createdAt: integer("created_at")
+  createdAt: integer("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
-  updatedAt: integer("updated_at")
+  updatedAt: integer("updated_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
 });
@@ -247,10 +247,10 @@ export const paymentToDriverSchema = sqliteTable("payment_to_driver", {
     () => debtToDriverSchema.id,
   ),
   paymentDate: integer("payment_date", { mode: "timestamp" }).notNull(),
-  createdAt: integer("created_at")
+  createdAt: integer("created_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
-  updatedAt: integer("updated_at")
+  updatedAt: integer("updated_at", { mode: "timestamp" })
     .default(sql`(unixepoch())`)
     .notNull(),
 });

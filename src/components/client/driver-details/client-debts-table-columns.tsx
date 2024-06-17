@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { GetClientDebtsOutput } from "~/actions/client/get-client-debts";
-import { format, fromUnixTime } from "date-fns";
+import { format } from "date-fns";
 import AddClientPaymentDialog from "~/components/client/driver-details/add-client-payment-dialog";
 
 type GetClientDebtsTableColumnsProps = {
@@ -44,7 +44,7 @@ export const getClientDebtsTableColumns = (
   {
     accessorKey: "createdAt",
     header: "Fecha de creación",
-    cell: ({ row }) => format(fromUnixTime(row.original.createdAt), "PPp"),
+    cell: ({ row }) => format(row.original.createdAt, "PPp"),
   },
   {
     id: "actions",

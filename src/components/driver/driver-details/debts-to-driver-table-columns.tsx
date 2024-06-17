@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { GetDebtsToDriverOutput } from "~/actions/driver/get-debts-to-driver";
-import { format, fromUnixTime } from "date-fns";
+import { format } from "date-fns";
 import AddDebtToProviderPaymentDialog from "~/components/driver/driver-details/add-debt-to-provider-payment-dialog";
 
 type getDebtsToDriverTableColumnsProps = {
@@ -48,7 +48,7 @@ export function getDebtsToDriverTableColumns(
     {
       accessorKey: "createdAt",
       header: "Fecha creación",
-      cell: ({ row }) => format(fromUnixTime(row.original.createdAt), "PPp"),
+      cell: ({ row }) => format(row.original.createdAt, "PPp"),
     },
     {
       id: "actions",
