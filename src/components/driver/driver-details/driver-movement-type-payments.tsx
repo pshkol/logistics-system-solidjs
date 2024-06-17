@@ -5,6 +5,7 @@ import { getMovementTypes } from "~/actions/movement-type/get-movement-types";
 
 type DriverMovementTypePaymentsProps = {
   driverId: number;
+  driverActiveStatus: boolean;
 };
 
 export default function DriverMovementTypePayments(
@@ -27,6 +28,7 @@ export default function DriverMovementTypePayments(
         columns={driverMovementTypesTableColumns({
           driverId: props.driverId,
           onPaymentAdded: refetch,
+          driverActiveStatus: props.driverActiveStatus,
         })}
         data={movementTypes()?.data ?? []}
       />

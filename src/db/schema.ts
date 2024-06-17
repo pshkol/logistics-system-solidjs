@@ -72,6 +72,7 @@ export const driverSchema = sqliteTable("driver", {
   id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
   name: text("name").notNull(),
   lastName: text("last_name").notNull(),
+  active: integer("active", { mode: "boolean" }).notNull().default(true),
   createdAt: integer("created_at")
     .default(sql`(unixepoch())`)
     .notNull(),

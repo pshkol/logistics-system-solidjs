@@ -6,6 +6,7 @@ import AddMovementPaymentDialog from "~/components/driver/driver-details/add-mov
 type DriverMovementTypesTableColumnsProps = {
   driverId: number;
   onPaymentAdded: () => void;
+  driverActiveStatus: boolean;
 };
 
 export const driverMovementTypesTableColumns = (
@@ -47,15 +48,19 @@ export const driverMovementTypesTableColumns = (
     },
     {
       id: "actions",
-      cell: ({ row }) => (
-        <div class={"flex justify-end"}>
-          <AddMovementPaymentDialog
-            movementTypeId={row.original.id}
-            driverId={props.driverId}
-            onPaymentAdded={props.onPaymentAdded}
-          />
-        </div>
-      ),
+      cell: ({ row }) => {
+        if (!props.driverActiveStatus) return null;
+
+        return (
+          <div class={"flex justify-end"}>
+            <AddMovementPaymentDialog
+              movementTypeId={row.original.id}
+              driverId={props.driverId}
+              onPaymentAdded={props.onPaymentAdded}
+            />
+          </div>
+        );
+      },
     },
   ];
 };

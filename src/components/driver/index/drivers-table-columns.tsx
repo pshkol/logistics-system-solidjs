@@ -20,6 +20,13 @@ export const driversTableColumns: ColumnDef<
     header: "Apellido",
   },
   {
+    id: "active",
+    header: "Activo",
+    cell: ({ row }) => {
+      return row.original.active ? "Si" : "No";
+    },
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       return (

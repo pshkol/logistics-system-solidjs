@@ -61,7 +61,7 @@ const createMovement = async (values: MovementSchema) => {
     const movement = await tx
       .insert(movementSchema)
       .values({
-        amount: values.amount.toString(),
+        amount: values.amount,
         description: values.description,
         movementTypeId: values.movementTypeId,
         driverId: values.driverId,
@@ -72,7 +72,7 @@ const createMovement = async (values: MovementSchema) => {
 
     if (movementType.doCreateClientDebt) {
       await tx.insert(clientDebtSchema).values({
-        amount: values.amount.toString(),
+        amount: values.amount,
         clientId: values.clientId!,
         movementId: movement.id,
       });
@@ -81,7 +81,7 @@ const createMovement = async (values: MovementSchema) => {
     if (values.driverMovementPaymentId) {
       await tx.insert(debtToDriverSchema).values({
         driverId: values.driverId!,
-        amount: values.driverMovementPaymentAmount!.toString(),
+        amount: values.driverMovementPaymentAmount!,
         driverMovementPaymentId: values.driverMovementPaymentId!,
         movementId: movement.id,
       });
@@ -101,7 +101,10 @@ export default function AddMovementDialog(props: AddMovementDialogProps) {
   });
 
   const [movementTypes] = createResource(pagination, getMovementTypes);
-  const [drivers] = createResource(pagination, getDrivers);
+  const [drivers] = createResource(
+    { ...pagination(), active: true },
+    getDrivers,
+  );
   const [clients] = createResource(pagination, getClients);
 
   const [form, { Form, Field }] = createForm<MovementSchema>({

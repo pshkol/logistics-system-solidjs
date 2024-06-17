@@ -10,7 +10,10 @@ export default function Index() {
     pageSize: 10,
     pageIndex: 0,
   });
-  const [drivers, { refetch }] = createResource(pagination, getDrivers);
+  const [drivers, { refetch }] = createResource(
+    { ...pagination() },
+    getDrivers,
+  );
   const [isReady, setIsReady] = createSignal(false);
 
   createEffect(() => {
