@@ -66,7 +66,11 @@ export default function Home() {
             </div>
           </Show>
         </ErrorBoundary>
-        <ErrorBoundary fallback={"Error2..."}>
+        <ErrorBoundary
+          fallback={(err, reset) => (
+            <div onClick={reset}>Error: {err.toString()}</div>
+          )}
+        >
           <Show when={clientsDebt()}>
             <div class={"rounded-lg bg-neutral-50 p-2 shadow-md"}>
               <p class={"text-sm font-semibold"}>Deuda de clientes</p>
