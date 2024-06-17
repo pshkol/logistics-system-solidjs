@@ -23,7 +23,12 @@ export const getClientsDebt = async (_props?: GetClientsDebtInput) => {
 
   const clients = await db.query.clientDebtSchema.findMany({
     with: {
-      payments: true,
+      payments: {
+        where: (payment, { lt }) =>
+          props?.endDate
+            ? lt(payment.createdAt, add(new Date(props.endDate), { days: 1 }))
+            : undefined,
+      },
     },
     where: (debt, { lt }) =>
       props?.endDate

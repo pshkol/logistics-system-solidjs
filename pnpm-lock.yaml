@@ -23,6 +23,9 @@ importers:
       '@solidjs/start':
         specifier: ^1.0.1
         version: 1.0.1(rollup@4.18.0)(solid-js@1.8.17)(vinxi@0.3.11(@libsql/client@0.6.2)(@opentelemetry/api@1.9.0)(@types/node@20.14.2)(drizzle-orm@0.31.2(@libsql/client@0.6.2)(@opentelemetry/api@1.9.0))(ioredis@5.4.1)(magicast@0.2.11)(terser@5.31.1))(vite@5.3.1(@types/node@20.14.2)(terser@5.31.1))
+      '@tanstack/solid-query':
+        specifier: ^5.45.0
+        version: 5.45.0(solid-js@1.8.17)
       '@tanstack/solid-table':
         specifier: ^8.17.3
         version: 8.17.3(solid-js@1.8.17)
@@ -1299,6 +1302,14 @@ packages:
 
   '@swc/helpers@0.5.11':
     resolution: {integrity: sha512-YNlnKRWF2sVojTpIyzwou9XoTNbzbzONwRhOoniEioF1AtaitTvVZblaQRrAzChWQ1bLYyYSWzM18y4WwgzJ+A==}
+
+  '@tanstack/query-core@5.45.0':
+    resolution: {integrity: sha512-RVfIZQmFUTdjhSAAblvueimfngYyfN6HlwaJUPK71PKd7yi43Vs1S/rdimmZedPWX/WGppcq/U1HOj7O7FwYxw==}
+
+  '@tanstack/solid-query@5.45.0':
+    resolution: {integrity: sha512-bvgTVmW3GSUxUv6LwbeYxDaF/6Bjsks7JlGHzNEoZXB0kjsoxqavRYmLgAIrwn1vqyR53dkxvH+rDTwGfQv6CQ==}
+    peerDependencies:
+      solid-js: ^1.6.0
 
   '@tanstack/solid-table@8.17.3':
     resolution: {integrity: sha512-K9Y1PGlw0F8YWQBVPrRvmkJGzHd4xkg3FoJ7fvJCMNnTJNelgf36kvEGDuacAf3Wh723jANLgJglxnulD3/Ynw==}
@@ -4417,6 +4428,13 @@ snapshots:
   '@swc/helpers@0.5.11':
     dependencies:
       tslib: 2.6.3
+
+  '@tanstack/query-core@5.45.0': {}
+
+  '@tanstack/solid-query@5.45.0(solid-js@1.8.17)':
+    dependencies:
+      '@tanstack/query-core': 5.45.0
+      solid-js: 1.8.17
 
   '@tanstack/solid-table@8.17.3(solid-js@1.8.17)':
     dependencies:
