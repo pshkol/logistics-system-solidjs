@@ -1,33 +1,9 @@
-import { createSignal } from "solid-js";
+import { createSignal, createResource } from "solid-js";
 import { TextField, TextFieldRoot } from "~/components/ui/textfield";
-import {
-  getClientsDebt,
-  GetClientsDebtInput,
-} from "~/actions/client/get-clients-debt";
-import {
-  getDriversDebt,
-  GetDriversDebtInput,
-} from "~/actions/driver/get-drivers-debt";
-import {
-  getRealMoney,
-  GetRealMoneyInput,
-} from "~/actions/common/get-real-money";
+import { getClientsDebt } from "~/actions/client/get-clients-debt";
+import { getDriversDebt } from "~/actions/driver/get-drivers-debt";
+import { getRealMoney } from "~/actions/common/get-real-money";
 import { formatISO } from "date-fns";
-import { cache, createAsync } from "@solidjs/router";
-
-const getDriversDebtCached = cache(
-  (params: GetDriversDebtInput) => getDriversDebt(params),
-  "driversDebt",
-);
-
-const getClientsDebtCached = cache(
-  (params: GetClientsDebtInput) => getClientsDebt(params),
-  "clientsDebt",
-);
-const getRealMoneyCached = cache(
-  (params: GetRealMoneyInput) => getRealMoney(params),
-  "realMoney",
-);
 
 export default function Home() {
   // const [startDate, setStartDate] = createSignal<string>(
@@ -37,16 +13,20 @@ export default function Home() {
     formatISO(new Date(), { representation: "date" }),
   );
 
-  const driversDebt = createAsync(() =>
-    getDriversDebtCached({
+  const [driversDebt, { refetch: refetchDriversDebt }] = createResource(() =>
+    getDriversDebt({ endDate: endDate() }),
+  );
+
+  const [clientsDebt, { refetch: refetchClientsDebt }] = createResource(() =>
+    getClientsDebt({
       endDate: endDate(),
     }),
   );
-  const clientsDebt = createAsync(() =>
-    getClientsDebtCached({ endDate: endDate() }),
-  );
-  const realMoney = createAsync(() =>
-    getRealMoneyCached({ endDate: endDate() }),
+
+  const [realMoney, { refetch: refetchRealMoney }] = createResource(() =>
+    getRealMoney({
+      endDate: endDate(),
+    }),
   );
 
   return (
@@ -56,7 +36,15 @@ export default function Home() {
         {/*  <TextField type={"date"} />*/}
         {/*</TextFieldRoot>*/}
         {/*-*/}
-        <TextFieldRoot onChange={setEndDate} value={endDate()}>
+        <TextFieldRoot
+          onChange={(vale) => {
+            setEndDate(vale);
+            refetchDriversDebt();
+            refetchClientsDebt();
+            refetchRealMoney();
+          }}
+          value={endDate()}
+        >
           <TextField type={"date"} />
         </TextFieldRoot>
       </section>
